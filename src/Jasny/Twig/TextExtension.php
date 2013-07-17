@@ -161,6 +161,6 @@ class TextExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'text';
+        return 'jasny/text';
     }
 }

@@ -82,6 +82,6 @@ class PcreExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'pcre';
+        return 'jasny/pcre';
     }
 }
