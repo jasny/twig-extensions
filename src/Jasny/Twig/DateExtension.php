@@ -14,7 +14,7 @@ class DateExtension extends \Twig_Extension
      */
     public function __construct()
     {
-        if (!extension_loaded('intl')) throw new \Exception("The LocalDate Twig extension requires PHP extension 'intl' (see http://www.php.net/intl).");
+        if (!extension_loaded('intl')) throw new \Exception("Jasny's Date Twig extension requires PHP extension 'intl' (see http://www.php.net/intl).");
     }
 
 
@@ -28,6 +28,7 @@ class DateExtension extends \Twig_Extension
             'localdate' => new \Twig_Filter_Method($this, 'localDate'),
             'localtime' => new \Twig_Filter_Method($this, 'localTime'),
             'localdatetime' => new \Twig_Filter_Method($this, 'localDateTime'),
+            'age' => new \Twig_Filter_Method($this, 'age'),
         );
     }
 
@@ -108,6 +109,19 @@ class DateExtension extends \Twig_Extension
         $df = new \IntlDateFormatter(\Locale::getDefault(), $format, \IntlDateFormatter::SHORT, null, $calendar, $pattern);
         return $df->format($date->getTimestamp());
     }
+
+    /**
+     * Get the age (in years) based on a date.
+     * 
+     * @param DateTime|string $date
+     * @return int
+     */
+    public static function age($date)
+    {
+        if (!$date instanceof \DateTime) $date = new \DateTime($date);
+        return $date->diff(new \DateTime())->format('%y');
+    }
+    
 
     /**
      * Format the date/time value as a string based on the current locale
