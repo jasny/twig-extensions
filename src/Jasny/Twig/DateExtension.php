@@ -7,7 +7,7 @@ namespace Jasny\Twig;
  * 
  * @author Arnold Daniels <arnold@jasny.net>
  */
-class LocalDateExtension extends \Twig_Extension
+class DateExtension extends \Twig_Extension
 {
     /**
      * Class constructor
@@ -19,14 +19,15 @@ class LocalDateExtension extends \Twig_Extension
 
 
     /**
-     * {@inheritdoc}
+     * Callback for Twig
+     * @ignore
      */
     public function getFilters()
     {
         return array(
-            'localdate' => new \Twig_Filter_Method($this, 'formatDate'),
-            'localtime' => new \Twig_Filter_Method($this, 'formatTime'),
-            'localdatetime' => new \Twig_Filter_Method($this, 'formatDateTime'),
+            'localdate' => new \Twig_Filter_Method($this, 'localDate'),
+            'localtime' => new \Twig_Filter_Method($this, 'localTime'),
+            'localdatetime' => new \Twig_Filter_Method($this, 'localDateTime'),
         );
     }
 
@@ -38,7 +39,7 @@ class LocalDateExtension extends \Twig_Extension
      * @param string              $calendar  'gregorian' or 'traditional'
      * @return string
      */
-    public function formatDate($date, $format=null, $calendar='gregorian')
+    public function localDate($date, $format=null, $calendar='gregorian')
     {
         if ($date instanceof \DateTime);
          elseif (is_int($date)) $date = \DateTime::createFromFormat('U', $time);
@@ -59,7 +60,7 @@ class LocalDateExtension extends \Twig_Extension
      * @param string              $calendar  'gregorian' or 'traditional'
      * @return string
      */
-    public function formatTime($date, $format='short', $calendar='gregorian')
+    public function localTime($date, $format='short', $calendar='gregorian')
     {
         if ($date instanceof \DateTime);
          elseif (is_int($date)) $date = \DateTime::createFromFormat('U', $time);
@@ -80,7 +81,7 @@ class LocalDateExtension extends \Twig_Extension
      * @param string              $calendar  'gregorian' or 'traditional'
      * @return string
      */
-    public function formatDateTime($date, $format=null, $calendar='gregorian')
+    public function localDateTime($date, $format=null, $calendar='gregorian')
     {
         if ($date instanceof \DateTime);
          elseif (is_int($date)) $date = \DateTime::createFromFormat('U', $time);
@@ -93,7 +94,7 @@ class LocalDateExtension extends \Twig_Extension
             $format_time = 'short';
             
             extract((array)$format, EXTR_PREFIX_ALL, 'format');
-            return $this->formatDate($date, $format_date, $calendar) . ' ' . $this->formatTime($date, $format_time, $calendar);
+            return $this->localDate($date, $format_date, $calendar) . ' ' . $this->localTime($date, $format_time, $calendar);
         }
         
         list($format, $pattern) = $this->getFormat($format, $calendar);
@@ -143,6 +144,6 @@ class LocalDateExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'localdate';
+        return 'jasny/date';
     }
 }

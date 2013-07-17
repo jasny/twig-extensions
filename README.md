@@ -10,7 +10,7 @@ and can be easily installed using [composer](http://getcomposer.org/). Alternati
 the file from the 'src' folder.
 
 
-## LocalDate ##
+## Date extension ##
 
 Format a date base on the current locale. Requires the [intl extension](http://www.php.net/intl).
 
@@ -22,7 +22,7 @@ Format a date base on the current locale. Requires the [intl extension](http://w
 Locale::setDefault(LC_ALL, "en_US"); // vs "nl_NL"
 
 $twig = new Twig_Environment($loader, $options);
-$twig->addExtension(new Jasny\Twig\LocalDateExtension());
+$twig->addExtension(new Jasny\Twig\DateExtension());
 ```
 
 ```
