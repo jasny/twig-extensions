@@ -27,8 +27,8 @@ $twig->addExtension(new Jasny\Twig\DateExtension());
 ```
 
 ```
-{{"now"|localdate(long)}}                   <!-- July 12, 2013 --> <!-- July 12, 2013 -->
-{{"now"|localtime(short)}}                  <!-- 5:53 PM --> <!-- 17:53 PM -->
+{{"now"|localdate(long)}}                   <!-- July 12, 2013 --> <!-- 12 juli 2013 -->
+{{"now"|localtime(short)}}                  <!-- 5:53 PM --> <!-- 17:53 -->
 {{"2013-10-01 23:15:00"|localdatetime()}}   <!-- 10/01/2013 11:15 PM --> <!-- 01-10-2013 23:15 -->
 {{"22-08-1981"|age}}                        <!-- 31 -->
 ```
