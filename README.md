@@ -34,10 +34,15 @@ $twig->addExtension(new Jasny\Twig\DateExtension());
 
 ## PCRE ##
 
-Exposes part of [PCRE](http://www.php.net/pcre) to Twig.
+Exposes [PCRE](http://www.php.net/pcre) to Twig.
 
+* preg_quote   - Quote regular expression characters
 * preg_match   - Perform a regular expression match
+* preg_get     - Perform a regular expression match and returns the matched group
+* preg_get_all - Perform a regular expression match and return the group for all matches
+* preg_grep    - Perform a regular expression match and return an array of entries that match the pattern
 * preg_replace - Perform a regular expression search and replace
+* preg_filter  - Perform a regular expression search and replace, returning only matched subjects.
 * preg_split   - Split text into an array using a regular expression
 
 ```php
@@ -46,10 +51,11 @@ $twig->addExtension(new \Jasny\Twig\PcreExtension());
 ```
 
 ```
-{% if customer.email|preg_match('/^.+@.+\.\w+$/) %}Email: {{ field }}{% endif %}
-Website: {{ field customer.website|preg_replace('~^https?://~')
+{% if client.email|preg_match('/^.+@.+\.\w+$/) %}Email: {{ client.email }}{% endif %}
+Website: {{ client.website|preg_replace('~^https?://~')
+First name: {{ client.fullname|preg_get('/^\S+/') }}
 <ul>
-  {% for item in items|preg_split('/\s+/') %}
+  {% for item in items|preg_split('/\s+/')|grep_filter('/-test$/', 'invert') %}
     <li>{{ item }}</li>
   {% endfor %}
 </ul>
