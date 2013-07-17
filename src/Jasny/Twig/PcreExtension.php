@@ -39,6 +39,8 @@ class PcreExtension extends \Twig_Extension
      */
     public function match($value, $pattern)
     {
+        if (!isset($value)) return null;
+        
         return preg_match($pattern, $value);
     }
 
@@ -53,6 +55,8 @@ class PcreExtension extends \Twig_Extension
      */
     public function replace($value, $pattern, $replacement='', $limit=-1)
     {
+        if (!isset($value)) return null;
+        
         if (preg_match('/(.).*\1(.+)$/', trim($pattern), $match) && strpos($match[1], 'e') !== false) throw new Exception("Using the eval modifier for regular expressions is not allowed");
         return preg_replace($pattern, $replacement, $value, $limit);
     }
@@ -66,6 +70,8 @@ class PcreExtension extends \Twig_Extension
      */
     public function split($value, $pattern)
     {
+        if (!isset($value)) return null;
+        
         return preg_split($pattern, $value);
     }
     

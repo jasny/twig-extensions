@@ -33,6 +33,7 @@ class TextExtension extends \Twig_Extension
      */
     public function paragraph($value)
     {
+        if (!isset($value)) return null;
         return '<p>' . preg_replace(array('~\n(\s*)\n\s*~', '~(?<!</p>)\n\s*~'), array("</p>\n\$1<p>", "<br>\n"), trim($value)) . '</p>';
     }
 
@@ -45,6 +46,8 @@ class TextExtension extends \Twig_Extension
      */
     public function line($value, $line=1)
     {
+        if (!isset($value)) return null;
+        
         $lines = explode("\n", $value);
         return isset($lines[$line-1]) ? $lines[$line-1] : null;
     }
@@ -59,6 +62,8 @@ class TextExtension extends \Twig_Extension
      */
     public function more($value, $replace = '...', $break = '<!-- pagebreak -->')
     {
+        if (!isset($value)) return null;
+        
         $pos = stripos($value, $break);
         return $pos === false ? $value : substr($value, 0, $pos) . $replace;
     }
@@ -73,6 +78,7 @@ class TextExtension extends \Twig_Extension
      */
     public function truncate($value, $length, $replace = '...')
     {
+        if (!isset($value)) return null;
         return strlen($value) <= $length ? $value : substr($value, 0, $length - strip_tags($replace)) . $replace;
     }
     
@@ -87,6 +93,8 @@ class TextExtension extends \Twig_Extension
      */
     public function linkify($value, $protocols = array('http', 'mail'), array $attributes = array(), $mode = 'normal')
     {
+        if (!isset($value)) return null;
+        
         // Link attributes
         $attr = '';
         foreach ($attributes as $key => $val) {
@@ -125,6 +133,8 @@ class TextExtension extends \Twig_Extension
      */
     public function split($value, $delimiter="\n")
     {
+        if (!isset($value)) return null;
+        
         return explode($delimiter, $value);
     }
     
@@ -138,6 +148,8 @@ class TextExtension extends \Twig_Extension
      */
     public function join($value, $glue="\n", $filter=true)
     {
+        if (!isset($value)) return null;
+        
         if ($filter) $value = array_filter($value);
         return join($glue, $value);
     }

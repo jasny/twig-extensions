@@ -41,6 +41,8 @@ class DateExtension extends \Twig_Extension
      */
     public function localDate($date, $format=null, $calendar='gregorian')
     {
+        if (!isset($date)) return null;
+        
         if ($date instanceof \DateTime);
          elseif (is_int($date)) $date = \DateTime::createFromFormat('U', $time);
          else $date = new \DateTime((string)$date);
@@ -62,6 +64,8 @@ class DateExtension extends \Twig_Extension
      */
     public function localTime($date, $format='short', $calendar='gregorian')
     {
+        if (!isset($date)) return null;
+        
         if ($date instanceof \DateTime);
          elseif (is_int($date)) $date = \DateTime::createFromFormat('U', $time);
          else $date = new \DateTime((string)$date);
@@ -83,6 +87,8 @@ class DateExtension extends \Twig_Extension
      */
     public function localDateTime($date, $format=null, $calendar='gregorian')
     {
+        if (!isset($date)) return null;
+        
         if ($date instanceof \DateTime);
          elseif (is_int($date)) $date = \DateTime::createFromFormat('U', $time);
          else $date = new \DateTime((string)$date);
