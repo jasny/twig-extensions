@@ -29,7 +29,7 @@ class PcreExtension extends \Twig_Extension
             'preg_match' => new \Twig_Filter_Method($this, 'match'),
             'preg_get' => new \Twig_Filter_Method($this, 'get'),
             'preg_get_all' => new \Twig_Filter_Method($this, 'getAll'),
-            'preg_grep' => new \Twig_Filter_Method($this, 'get'),
+            'preg_grep' => new \Twig_Filter_Method($this, 'grep'),
             'preg_replace' => new \Twig_Filter_Method($this, 'replace'),
             'preg_filter' => new \Twig_Filter_Method($this, 'filter'),
             'preg_split' => new \Twig_Filter_Method($this, 'split'),
