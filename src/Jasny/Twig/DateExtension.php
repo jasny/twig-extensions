@@ -165,7 +165,7 @@ class DateExtension extends \Twig_Extension
      */
     protected function splitDuration($seconds, $max)
     {
-        if ($max < 1) return array($seconds);
+        if ($max < 1 || $seconds < 60) return array($seconds);
         
         $minutes = floor($seconds / 60);
         $seconds = $seconds % 60;
