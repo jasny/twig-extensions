@@ -83,3 +83,4 @@ Brings PHP's array functions to Twig
 * product - Calculate the product of values in an array
 * values - Return all the values of an array
 * as_array - Cast an object to an array
+* html_attr - Turn an array into an HTML attribute string

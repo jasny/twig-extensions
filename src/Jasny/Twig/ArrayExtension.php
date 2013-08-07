@@ -30,6 +30,7 @@ class ArrayExtension extends \Twig_Extension
             'product' => new \Twig_Filter_Method($this, 'product'),
             'values' => new \Twig_Filter_Method($this, 'values'),
             'as_array' => new \Twig_Filter_Method($this, 'asArray'),
+            'html_attr' => new \Twig_Filter_Method($this, 'HTMLAttributes'),
         );
     }
     
@@ -80,5 +81,25 @@ class ArrayExtension extends \Twig_Extension
     public function asArray($object)
     {
         return (array)$object;
+    }
+    
+    /**
+     * Cast an array to an HTML attribute string
+     * 
+     * @param mixed $array
+     * @return string
+     */
+    public function HTMLAttributes($array)
+    {
+        if (!isset($array)) return null;
+       
+        $str = "";
+        foreach ($array as $key=>$value) {
+            if (!isset($value) || $value === false) continue;
+            
+            if ($value === true) $value = $key;
+            $str .= ' ' . $key . '="' . addcslashes($value, '"') . '"';
+        }
+        return trim($str);
     }
 }
