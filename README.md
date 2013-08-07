@@ -9,6 +9,14 @@ Jasny's Twig Extensions are registred at packagist as [jasny/twig-extensions](ht
 and can be easily installed using [composer](http://getcomposer.org/). Alternatively you can simply download the .zip and copy
 the file from the 'src' folder.
 
+```php
+$twig = new Twig_Environment($loader, $options);
+$twig->addExtension(new Jasny\Twig\DateExtension());
+$twig->addExtension(new Jasny\Twig\PcreExtension());
+$twig->addExtension(new Jasny\Twig\TextExtension());
+$twig->addExtension(new Jasny\Twig\ArrayExtension());
+```
+
 
 ## Date extension ##
 
@@ -21,9 +29,6 @@ Format a date base on the current locale. Requires the [intl extension](http://w
 
 ```php
 Locale::setDefault(LC_ALL, "en_US"); // vs "nl_NL"
-
-$twig = new Twig_Environment($loader, $options);
-$twig->addExtension(new Jasny\Twig\DateExtension());
 ```
 
 ```
@@ -47,11 +52,6 @@ Exposes [PCRE](http://www.php.net/pcre) to Twig.
 * preg_filter  - Perform a regular expression search and replace, returning only matched subjects.
 * preg_split   - Split text into an array using a regular expression
 
-```php
-$twig = new Twig_Environment($loader, $options);
-$twig->addExtension(new \Jasny\Twig\PcreExtension());
-```
-
 ```
 {% if client.email|preg_match('/^.+@.+\.\w+$/) %}Email: {{ client.email }}{% endif %}
 Website: {{ client.website|preg_replace('~^https?://~')
@@ -68,13 +68,18 @@ First name: {{ client.fullname|preg_get('/^\S+/') }}
 
 Convert text to HTML + string functions
 
-```php
-$twig = new Twig_Environment($loader, $options);
-$twig->addExtension(new \Jasny\Twig\TextExtension());
-```
-
 * paragraph - Add HTML paragraph and line breaks to text
 * more - Cut of text on a pagebreak
 * truncate - Cut of text if it's to long
 * linkify - Turn all URLs in clickable links (also supports Twitter @user and #subject)
 * split - Split text into an array (explode)
+
+
+## Array ##
+
+Brings PHP's array functions to Twig
+
+* sum - Calculate the sum of values in an array
+* product - Calculate the product of values in an array
+* values - Return all the values of an array
+* as_array - Cast an object to an array
