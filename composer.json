@@ -1,7 +1,7 @@
 {
     "name": "jasny/twig-extensions",
     "description": "A set of useful Twig filters",
-    "keywords": ["templating", "PCRE", "regex", "date", "time", "datetime", "text"],
+    "keywords": ["templating", "PCRE", "preg", "regex", "date", "time", "datetime", "text", "array"],
     "license": "MIT",
     "homepage": "http://github.com/jasny/twig-extensions#README",
     "authors": [
