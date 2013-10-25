@@ -17,6 +17,31 @@ $twig->addExtension(new Jasny\Twig\TextExtension());
 $twig->addExtension(new Jasny\Twig\ArrayExtension());
 ```
 
+To use in a symfony project [register the extensions as a service](http://symfony.com/doc/current/cookbook/templating/twig_extension.html#register-an-extension-as-a-service).
+
+```yaml
+services:
+  twig.extension.date:
+    class: Jasny\Twig\DateExtension
+    tags:
+      - { name: twig.extension }
+
+  twig.extension.pcre:
+    class: Jasny\Twig\PcreExtension
+    tags:
+      - { name: twig.extension }
+  
+  twig.extension.text:
+    class: Jasny\Twig\TextExtension
+    tags:
+      - { name: twig.extension }
+
+  twig.extension.array:
+    class: Jasny\Twig\ArrayExtension
+    tags:
+      - { name: twig.extension }
+```
+
 
 ## Date extension ##
 
