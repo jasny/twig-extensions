@@ -17,11 +17,9 @@ class TextExtension extends \Twig_Extension
         return array(
             'paragraph' => new \Twig_Filter_Method($this, 'paragraph', array('pre_escape' => 'html', 'is_safe' => array('html'))),
             'line' => new \Twig_Filter_Method($this, 'line'),
-            'more' => new \Twig_Filter_Method($this, 'more', array('pre_escape' => 'html', 'is_safe' => array('html'))),
+            'less' => new \Twig_Filter_Method($this, 'less', array('pre_escape' => 'html', 'is_safe' => array('html'))),
             'truncate' => new \Twig_Filter_Method($this, 'truncate', array('pre_escape' => 'html', 'is_safe' => array('html'))),
             'linkify' => new \Twig_Filter_Method($this, 'linkify', array('pre_escape' => 'html', 'is_safe' => array('html'))),
-            'split' => new \Twig_Filter_Method($this, 'split'),
-            'join' => new \Twig_Filter_Method($this, 'join'),
         );
     }
 
@@ -60,7 +58,7 @@ class TextExtension extends \Twig_Extension
      * @param string $break
      * @return string
      */
-    public function more($value, $replace = '...', $break = '<!-- pagebreak -->')
+    public function less($value, $replace = '...', $break = '<!-- pagebreak -->')
     {
         if (!isset($value)) return null;
         
@@ -124,36 +122,6 @@ class TextExtension extends \Twig_Extension
         return preg_replace_callback('/<(\d+)>/', function ($match) use (&$links) { return $links[$match[1] - 1]; }, $value);
     }
 
-    /**
-     * Split text into an array (explode).
-     * 
-     * @param string $value
-     * @param string $delimiter
-     * @return array
-     */
-    public function split($value, $delimiter="\n")
-    {
-        if (!isset($value)) return null;
-        
-        return explode($delimiter, $value);
-    }
-    
-    /**
-     * Join array elements with a string (implode).
-     * 
-     * @param array  $value
-     * @param string $glue
-     * @param boolean $filter
-     * @return string
-     */
-    public function join($value, $glue="\n", $filter=true)
-    {
-        if (!isset($value)) return null;
-        
-        if ($filter) $value = array_filter($value);
-        return join($glue, $value);
-    }
-    
     /**
      * Return extension name
      * 

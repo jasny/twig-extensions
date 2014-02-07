@@ -69,7 +69,8 @@ First name: {{ client.fullname|preg_get('/^\S+/') }}
 Convert text to HTML + string functions
 
 * paragraph - Add HTML paragraph and line breaks to text
-* more - Cut of text on a pagebreak
+* line - Get a single line of text
+* less - Cut of text on a pagebreak
 * truncate - Cut of text if it's to long
 * linkify - Turn all URLs in clickable links (also supports Twitter @user and #subject)
 * split - Split text into an array (explode)
