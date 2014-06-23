@@ -57,8 +57,8 @@ Locale::setDefault(LC_ALL, "en_US"); // vs "nl_NL"
 ```
 
 ```
-{{"now"|localdate(long)}}                   <!-- July 12, 2013 --> <!-- 12 juli 2013 -->
-{{"now"|localtime(short)}}                  <!-- 5:53 PM --> <!-- 17:53 -->
+{{"now"|localdate('long')}}                 <!-- July 12, 2013 --> <!-- 12 juli 2013 -->
+{{"now"|localtime('short')}}                <!-- 5:53 PM --> <!-- 17:53 -->
 {{"2013-10-01 23:15:00"|localdatetime()}}   <!-- 10/01/2013 11:15 PM --> <!-- 01-10-2013 23:15 -->
 {{"22-08-1981"|age}}                        <!-- 31 -->
 ```
@@ -107,5 +107,5 @@ Brings PHP's array functions to Twig
 * sum - Calculate the sum of values in an array
 * product - Calculate the product of values in an array
 * values - Return all the values of an array
-* as_array - Cast an object to an array
+* as_array - Cast an object to an associated array
 * html_attr - Turn an array into an HTML attribute string
