@@ -51,6 +51,7 @@ Format a date base on the current locale. Requires the [intl extension](http://w
 * localtime     - Format the time value as a string based on the current locale
 * localdatetime - Format the date/time value as a string based on the current locale
 * age           - Get the age (in years) based on a date
+* duration      - Get the duration string from seconds
 
 ```php
 Locale::setDefault(LC_ALL, "en_US"); // vs "nl_NL"
@@ -61,6 +62,7 @@ Locale::setDefault(LC_ALL, "en_US"); // vs "nl_NL"
 {{"now"|localtime('short')}}                <!-- 5:53 PM --> <!-- 17:53 -->
 {{"2013-10-01 23:15:00"|localdatetime()}}   <!-- 10/01/2013 11:15 PM --> <!-- 01-10-2013 23:15 -->
 {{"22-08-1981"|age}}                        <!-- 31 -->
+{{ 3600|duration }}                         <!-- 1h -->
 ```
 
 
