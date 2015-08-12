@@ -43,7 +43,7 @@ class PcreExtension extends \Twig_Extension
      */
     protected function assertNoEval($pattern)
     {
-        if (preg_match('/(.).*\1(.+)$/', trim($pattern), $match) && strpos($match[1], 'e') !== false) throw new Exception("Using the eval modifier for regular expressions is not allowed");
+        if (preg_match('/(.).*\1(.+)$/', trim($pattern), $match) && strpos($match[1], 'e') !== false) throw new \Exception("Using the eval modifier for regular expressions is not allowed");
     }
     
 
