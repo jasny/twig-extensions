@@ -15,11 +15,11 @@ class TextExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'paragraph' => new \Twig_Filter_Method($this, 'paragraph', array('pre_escape' => 'html', 'is_safe' => array('html'))),
-            'line' => new \Twig_Filter_Method($this, 'line'),
-            'less' => new \Twig_Filter_Method($this, 'less', array('pre_escape' => 'html', 'is_safe' => array('html'))),
-            'truncate' => new \Twig_Filter_Method($this, 'truncate', array('pre_escape' => 'html', 'is_safe' => array('html'))),
-            'linkify' => new \Twig_Filter_Method($this, 'linkify', array('pre_escape' => 'html', 'is_safe' => array('html'))),
+            'paragraph' => new \Twig_SimpleFilter('paragraph', array($this, 'paragraph'), array('pre_escape' => 'html', 'is_safe' => array('html'))),
+            'line' => new \Twig_SimpleFilter('line', array($this, 'line')),
+            'less' => new \Twig_SimpleFilter('less', array($this, 'less'), array('pre_escape' => 'html', 'is_safe' => array('html'))),
+            'truncate' => new \Twig_SimpleFilter('truncate', array($this, 'truncate'), array('pre_escape' => 'html', 'is_safe' => array('html'))),
+            'linkify' => new \Twig_SimpleFilter('linkify', array($this, 'linkify'), array('pre_escape' => 'html', 'is_safe' => array('html'))),
         );
     }
 

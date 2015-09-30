@@ -26,11 +26,11 @@ class ArrayExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'sum' => new \Twig_Filter_Method($this, 'sum'),
-            'product' => new \Twig_Filter_Method($this, 'product'),
-            'values' => new \Twig_Filter_Method($this, 'values'),
-            'as_array' => new \Twig_Filter_Method($this, 'asArray'),
-            'html_attr' => new \Twig_Filter_Method($this, 'HTMLAttributes'),
+            'sum' => new \Twig_SimpleFilter('sum', array($this, 'sum')),
+            'product' => new \Twig_SimpleFilter('product', array($this, 'product')),
+            'values' => new \Twig_SimpleFilter('values', array($this, 'values')),
+            'as_array' => new \Twig_SimpleFilter('as_array', array($this, 'asArray')),
+            'html_attr' => new \Twig_SimpleFilter('html_attr', array($this, 'HTMLAttributes')),
         );
     }
     
