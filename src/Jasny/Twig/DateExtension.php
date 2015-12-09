@@ -91,7 +91,7 @@ class DateExtension extends \Twig_Extension
         if (!isset($date)) return null;
         
         if ($date instanceof \DateTime);
-         elseif (is_int($date)) $date = \DateTime::createFromFormat('U', $time);
+         elseif (is_int($date)) $date = \DateTime::createFromFormat('U', $date);
          else $date = new \DateTime((string)$date);
         
         $calendar = $calendar == 'traditional' ? \IntlDateFormatter::TRADITIONAL : \IntlDateFormatter::GREGORIAN;
@@ -114,7 +114,7 @@ class DateExtension extends \Twig_Extension
         if (!isset($date)) return null;
         
         if ($date instanceof \DateTime);
-         elseif (is_int($date)) $date = \DateTime::createFromFormat('U', $time);
+         elseif (is_int($date)) $date = \DateTime::createFromFormat('U', $date);
          else $date = new \DateTime((string)$date);
         
         $calendar = $calendar == 'traditional' ? \IntlDateFormatter::TRADITIONAL : \IntlDateFormatter::GREGORIAN;
@@ -137,7 +137,7 @@ class DateExtension extends \Twig_Extension
         if (!isset($date)) return null;
         
         if ($date instanceof \DateTime);
-         elseif (is_int($date)) $date = \DateTime::createFromFormat('U', $time);
+         elseif (is_int($date)) $date = \DateTime::createFromFormat('U', $date);
          else $date = new \DateTime((string)$date);
 
         $calendar = $calendar == 'traditional' ? \IntlDateFormatter::TRADITIONAL : \IntlDateFormatter::GREGORIAN;
