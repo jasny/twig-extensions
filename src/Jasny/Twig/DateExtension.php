@@ -35,11 +35,11 @@ class DateExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'localdate' => new \Twig_Filter_Method($this, 'localDate'),
-            'localtime' => new \Twig_Filter_Method($this, 'localTime'),
-            'localdatetime' => new \Twig_Filter_Method($this, 'localDateTime'),
-            'duration' => new \Twig_Filter_Method($this, 'duration'),
-            'age' => new \Twig_Filter_Method($this, 'age'),
+            'localdate' => new \Twig_SimpleFilter('localdate', array($this, 'localDate')),
+            'localtime' => new \Twig_SimpleFilter('localtime', array($this, 'localTime')),
+            'localdatetime' => new \Twig_SimpleFilter('localdatetime', array($this, 'localDateTime')),
+            'duration' => new \Twig_SimpleFilter('duration', array($this, 'duration')),
+            'age' => new \Twig_SimpleFilter('age', array($this, 'age')),
         );
     }
 
