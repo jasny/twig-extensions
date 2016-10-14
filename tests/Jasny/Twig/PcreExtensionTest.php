@@ -2,15 +2,14 @@
 
 namespace Jasny\Twig;
 
-use Jasny\Twig\PcreExtension;
 
-class PcreExtensionTest extends PHPUnit_Framework_TestCase {
+class PcreExtensionTest extends \PHPUnit_Framework_TestCase  {
 
     private function buildEnv($template) {
-        $loader = new Twig_Loader_Array(array(
+        $loader = new \Twig_Loader_Array(array(
             'template' => $template,
         ));
-        $twig = new Twig_Environment($loader);
+        $twig = new \Twig_Environment($loader);
         $twig->addExtension(new PcreExtension());
         return $twig;
     }
@@ -43,7 +42,7 @@ class PcreExtensionTest extends PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @expectedException Twig_Error_Runtime
+     * @expectedException \Twig_Error_Runtime
      */
     public function testPregMatchError() {
         $this->check('NO', '{% if "fod"|preg_match("/o//o/") %}YES{% else %}NO{% endif %}');
