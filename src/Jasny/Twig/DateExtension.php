@@ -75,7 +75,7 @@ class DateExtension extends \Twig_Extension
      */
     protected function getDefaultDatePattern($calendar=\IntlDateFormatter::GREGORIAN)
     {
-        return preg_replace('/\byy?\b/', 'yyyy', \IntlDateFormatter::create(\Locale::getDefault(), \IntlDateFormatter::SHORT, \IntlDateFormatter::NONE, null, $calendar)->getPattern());
+        return preg_replace('/\byy?\b/', 'yyyy', \IntlDateFormatter::create(\Locale::getDefault(), \IntlDateFormatter::SHORT, \IntlDateFormatter::NONE, \IntlTimeZone::getGMT(), $calendar)->getPattern());
     }
 
     /**
@@ -97,7 +97,7 @@ class DateExtension extends \Twig_Extension
         $calendar = $calendar == 'traditional' ? \IntlDateFormatter::TRADITIONAL : \IntlDateFormatter::GREGORIAN;
         list($format, $pattern) = $this->getFormat($format, $calendar);
         
-        $df = new \IntlDateFormatter(\Locale::getDefault(), $format, \IntlDateFormatter::NONE, null, $calendar, $pattern);
+        $df = new \IntlDateFormatter(\Locale::getDefault(), $format, \IntlDateFormatter::NONE, \IntlTimeZone::getGMT(), $calendar, $pattern);
         return $df->format($date->getTimestamp());
     }
 
@@ -120,7 +120,7 @@ class DateExtension extends \Twig_Extension
         $calendar = $calendar == 'traditional' ? \IntlDateFormatter::TRADITIONAL : \IntlDateFormatter::GREGORIAN;
         list($format, $pattern) = $this->getFormat($format, $calendar);
         
-        $df = new \IntlDateFormatter(\Locale::getDefault(), \IntlDateFormatter::NONE, $format, null, $calendar, $pattern);
+        $df = new \IntlDateFormatter(\Locale::getDefault(), \IntlDateFormatter::NONE, $format, \IntlTimeZone::getGMT(), $calendar, $pattern);
         return $df->format($date->getTimestamp());
     }
 
@@ -152,7 +152,7 @@ class DateExtension extends \Twig_Extension
         
         list($format, $pattern) = $this->getFormat($format, $calendar);
         
-        $df = new \IntlDateFormatter(\Locale::getDefault(), $format, \IntlDateFormatter::SHORT, null, $calendar, $pattern);
+        $df = new \IntlDateFormatter(\Locale::getDefault(), $format, \IntlDateFormatter::SHORT, \IntlTimeZone::getGMT(), $calendar, $pattern);
         return $df->format($date->getTimestamp());
     }
     

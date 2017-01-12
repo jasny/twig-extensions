@@ -2,15 +2,14 @@
 
 namespace Jasny\Twig;
 
-use Jasny\Twig\TextExtension;
 
-class TextExtensionTest extends PHPUnit_Framework_TestCase {
+class TextExtensionTest extends \PHPUnit_Framework_TestCase  {
 
     private function buildEnv($template) {
-        $loader = new Twig_Loader_Array(array(
+        $loader = new \Twig_Loader_Array(array(
             'template' => $template,
         ));
-        $twig = new Twig_Environment($loader);
+        $twig = new \Twig_Environment($loader);
         $twig->addExtension(new TextExtension());
         return $twig;
     }

@@ -2,20 +2,19 @@
 
 namespace Jasny\Twig;
 
-use Jasny\Twig\DateExtension;
 
-class DateExtensionTest extends PHPUnit_Framework_TestCase {
+class DateExtensionTest extends \PHPUnit_Framework_TestCase  {
 
     public static function setUpBeforeClass() {
         parent::setUpBeforeClass();
-        Locale::setDefault("en_CA");
+        \Locale::setDefault("en_EN");
     }
     
     private function buildEnv($template) {
-        $loader = new Twig_Loader_Array(array(
+        $loader = new \Twig_Loader_Array(array(
             'template' => $template,
         ));
-        $twig = new Twig_Environment($loader);
+        $twig = new \Twig_Environment($loader);
         $twig->addExtension(new DateExtension());
         return $twig;
     }
@@ -48,7 +47,7 @@ class DateExtensionTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testLocalTimeLong() {
-        $this->check('11:14:12 PM PDT', "{{ '23:14:12'|localtime('long') }}");
+        $this->check('11:14:12 PM GMT', "{{ '23:14:12'|localtime('long') }}");
     }
 
     public function testLocalTimeShort() {
