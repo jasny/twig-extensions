@@ -128,6 +128,25 @@ class DateExtension extends \Twig_Extension
     }
     
     /**
+     * Get the formatter to create a date and/or time pattern
+     * 
+     * @param int|string $datetype
+     * @param int|string $timetype
+     * @param int        $calendar
+     * @return string
+     */
+    protected function getDatePatternFormatter($datetype, $timetype, $calendar = \IntlDateFormatter::GREGORIAN)
+    {
+        return \IntlDateFormatter::create(
+            \Locale::getDefault(),
+            is_int($datetype) ? $datetype : \IntlDateFormatter::NONE,
+            is_int($timetype) ? $timetype : \IntlDateFormatter::NONE,
+            \IntlTimeZone::getGMT(),
+            $calendar
+        );
+    }
+    
+    /**
      * Get the date and/or time pattern
      * Default date pattern is short date pattern with 4 digit year.
      * 
@@ -138,30 +157,17 @@ class DateExtension extends \Twig_Extension
      */
     protected function getDatePattern($datetype, $timetype, $calendar = \IntlDateFormatter::GREGORIAN)
     {
-        if (
+        $createPattern =
             (is_int($datetype) && $datetype !== \IntlDateFormatter::NONE) ||
-            (is_int($timetype) && $timetype !== \IntlDateFormatter::NONE)
-        ) {
-            $pattern = \IntlDateFormatter::create(
-                \Locale::getDefault(),
-                is_int($datetype) ? $datetype : \IntlDateFormatter::NONE,
-                is_int($timetype) ? $timetype : \IntlDateFormatter::NONE,
-                \IntlTimeZone::getGMT(),
-                $calendar
-            )->getPattern();
-        } else {
-            $pattern = null;
-        }
+            (is_int($timetype) && $timetype !== \IntlDateFormatter::NONE);
         
-        if (is_string($datetype)) {
-            $pattern = trim($datetype . ' ' . $pattern);
-        }
-
-        if (is_string($timetype)) {
-            $pattern = trim($pattern . ' ' . $timetype);
-        }
+        $pattern = $createPattern ? $this->getDatePatternFormatter($datetype, $timetype, $calendar)->getPattern() : '';
         
-        return preg_replace('/\byy?\b/', 'yyyy', $pattern);
+        return trim(
+            (is_string($datetype) ? $datetype . ' ' : '') .
+            preg_replace('/\byy?\b/', 'yyyy', $pattern) .
+            (is_string($timetype) ? ' ' . $timetype : '')
+        );
     }
 
     /**
