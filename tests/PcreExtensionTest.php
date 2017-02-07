@@ -121,7 +121,7 @@ class PcreExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testReplaceAssertNoEval()
     {
-        $this->render('{{ "foo"|preg_replace("/o/e", "strtoupper") }}');
+        $this->render('{{ "foo"|preg_replace("/o/ei", "strtoupper") }}');
     }
     
     
@@ -138,7 +138,7 @@ class PcreExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testFilterAssertNoEval()
     {
-        $this->render('{{ "foo"|preg_filter("/o/e", "strtoupper") }}');
+        $this->render('{{ "foo"|preg_filter("/o/ei", "strtoupper") }}');
     }
     
     
@@ -172,7 +172,6 @@ class PcreExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testWithNull($filter)
     {
-        $this->assertRender(null, '{{ null|' . $filter . '("//") }}');
+        $this->assertRender('-', '{{ null|' . $filter . '("//")|default("-") }}');
     }    
-    
 }

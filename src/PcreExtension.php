@@ -30,11 +30,11 @@ class PcreExtension extends \Twig_Extension
     }
 
     /**
-     * Callback for Twig
+     * {@inheritdoc}
      */
     public function getFilters()
     {
-        return array(
+        return [
             new \Twig_SimpleFilter('preg_quote', [$this, 'quote']),
             new \Twig_SimpleFilter('preg_match', [$this, 'match']),
             new \Twig_SimpleFilter('preg_get', [$this, 'get']),
@@ -43,7 +43,7 @@ class PcreExtension extends \Twig_Extension
             new \Twig_SimpleFilter('preg_replace', [$this, 'replace']),
             new \Twig_SimpleFilter('preg_filter', [$this, 'filter']),
             new \Twig_SimpleFilter('preg_split', [$this, 'split']),
-        );
+        ];
     }
 
     
