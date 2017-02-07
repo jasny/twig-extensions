@@ -2,58 +2,166 @@
 
 namespace Jasny\Twig;
 
+use Jasny\Twig\DateExtension;
+use Jasny\Twig\TestHelper;
+
 /**
  * @covers Jasny\Twig\DateExtension
  */
 class DateExtensionTest extends \PHPUnit_Framework_TestCase
 {
-    public static function setUpBeforeClass()
+    use TestHelper;
+
+    public function setUp()
     {
         date_default_timezone_set('UTC');
         \Locale::setDefault("en_EN");
     }
     
-    protected function buildEnv($template)
+    protected function getExtension()
     {
-        $loader = new \Twig_Loader_Array(array(
-            'template' => $template,
-        ));
-        
-        $twig = new \Twig_Environment($loader);
-        $twig->addExtension(new DateExtension());
-        return $twig;
+        return new DateExtension();
     }
-    
-    protected function process($template, $data = array())
-    {
-        $twig = $this->buildEnv($template);
-        $result = $twig->render('template', $data);
-        
-        return $result;
-    }
-    
+
+
     public function localDateTimeProvider()
     {
         return [
-            ['9/20/2015', "{{ '20-09-2015'|localdate() }}"],
-            ['September 20, 2015', "{{ '20-09-2015'|localdate('long') }}"],
-            ['9/20/15', "{{ '20-09-2015'|localdate('short') }}"],
-            ['11:14 PM', "{{ '23:14:12'|localtime() }}"],
-            ['11:14:12 PM GMT', "{{ '23:14:12'|localtime('long') }}"],
-            ['11:14 PM', "{{ '23:14:12'|localtime('short') }}"]
+            ['9/20/2015', '20-09-2015', "{{ '20-09-2015'|localdate }}"],
+            ['September 20, 2015', '20 september 2015', "{{ '20-09-2015'|localdate('long') }}"],
+            ['9/20/15', "20-09-15", "{{ '20-09-2015'|localdate('short') }}"],
+            ['Sunday, September 20, 2015', "zondag 20 september 2015", "{{ '20-09-2015'|localdate('full') }}"],
+            ['20|09|2015', "20|09|2015", "{{ '20-09-2015'|localdate('dd|MM|yyyy') }}"],
+            
+            ['11:14 PM', "23:14", "{{ '23:14:12'|localtime }}"],
+            ['11:14:12 PM GMT', "23:14:12 GMT", "{{ '23:14:12'|localtime('long') }}"],
+            ['11:14 PM', "23:14", "{{ '23:14:12'|localtime('short') }}"],
+            ['11:14:12 PM GMT', "23:14:12 GMT", "{{ '23:14:12'|localtime('full') }}"],
+            ['23|14|12', "23|14|12", "{{ '23:14:12'|localtime('HH|mm|ss') }}"],
+            
+            ['9/20/2015, 11:14 PM', '20-09-2015 23:14', "{{ '20-09-2015 23:14:12'|localdatetime }}"],
+            ['20|23', '20|23', "{{ '20-09-2015 23:14:12'|localdatetime('dd|HH') }}"],
+            [
+                '9/20/15, 11:14:12 PM GMT',
+                '20-09-15 23:14:12 GMT',
+                "{{ '20-09-2015 23:14:12'|localdatetime({date: 'short', time: 'full'}) }}"
+            ],
+            [
+                '20150920 11:14:12 PM GMT',
+                '20150920 23:14:12 GMT',
+                "{{ '20-09-2015 23:14:12'|localdatetime({date: 'yyyyMMdd', time: 'full'}) }}"
+            ]
         ];
     }
     
     /**
      * @dataProvider localDateTimeProvider
      * 
-     * @param string $expected
+     * @param string $en
+     * @param string $nl
      * @param string $template
      */
-    public function testLocalDateTime($expected, $template)
+    public function testLocalDateTimeEn($en, $nl, $template)
     {
-        $result = $this->process($template);
+        if (!\Locale::setDefault("en_EN")) {
+            return $this->markAsSkipped("Unable to set locale to 'en_EN'");
+        }
         
-        $this->assertEquals($expected, $result);
+        $this->assertRender($en, $template);
     }
+    
+    /**
+     * @dataProvider localDateTimeProvider
+     * 
+     * @param string $en
+     * @param string $nl
+     * @param string $template
+     */
+    public function testLocalDateTimeNL($en, $nl, $template)
+    {
+        if (!\Locale::setDefault("nl_NL")) {
+            return $this->markAsSkipped("Unable to set locale to 'nl_NL'");
+        }
+        
+        $this->assertRender($nl, $template);
+        
+    }
+    
+    
+    public function durationProvider()
+    {
+        return [
+            ['31s', "{{ 31|duration }}"],
+            ['17m 31s', "{{ 1051|duration }}"],
+            ['3h 17m 31s', "{{ 11851|duration }}"],
+            ['2d 3h 17m 31s', "{{ 184651|duration }}"],
+            ['3w 2d 3h 17m 31s', "{{ 1999051|duration }}"],
+            ['1y 3w 2d 3h 17m 31s', "{{ 33448651|duration }}"],
+            
+            ['17 minute(s)', "{{ 1051|duration([null, ' minute(s)', ' hour(s)', ' day(s)']) }}"],
+            ['3 hour(s)', "{{ 11851|duration([null, null, ' hour(s)']) }}"],
+            ['2 day(s)', "{{ 184651|duration([null, null, null, ' day(s)']) }}"],
+            ['3 week(s)', "{{ 1999051|duration([null, null, null, null, ' week(s)']) }}"],
+            ['1 year(s)', "{{ 33448651|duration([null, null, null, null, null, ' year(s)']) }}"],
+            
+            ['3u:17m', "{{ 11851|duration([null, 'm', 'u'], ':') }}"],
+            ['3:17h', "{{ 11851|duration([null, '', ''], ':') }}h"],
+        ];
+    }
+    
+    /**
+     * @dataProvider durationProvider
+     * 
+     * @param string $expect
+     * @param string $template
+     */
+    public function testDuration($expect, $template)
+    {
+        $this->assertRender($expect, $template);
+    }
+    
+    
+    public function ageProvider()
+    {
+        $time = time() - (((32 * 365) + 100) * 24 * 3600);
+        $date = date('Y-m-d', $time);
+        
+        return [
+            ['32', "{{ $time|age }}"],
+            ['32', "{{ '$date'|age }}"]
+        ];
+    }
+    
+    /**
+     * @dataProvider ageProvider
+     * 
+     * @param string $expect
+     * @param string $template
+     */
+    public function testAge($expect, $template)
+    {
+        $this->assertRender($expect, $template);
+    }
+    
+    
+    public function filterProvider()
+    {
+        return [
+            ['localdate'],
+            ['localtime'],
+            ['localdatetime'],
+            ['duration'],
+            ['age']
+        ];
+    }
+    
+    /**
+     * @dataProvider filterProvider
+     * 
+     * @param string $filter
+     */
+    public function testWithNull($filter)
+    {
+        $this->assertRender('-', '{{ null|' . $filter . '("//")|default("-") }}');
+    }    
 }
