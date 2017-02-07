@@ -119,7 +119,7 @@ class TextExtension extends \Twig_Extension
             if ($match[1]) $protocol = $match[1];
             $link = $match[2] ?: $match[3];
             
-            return '<' . array_push($links, '<a' . $attr . ' href="' . $protocol . '://' . $link  . '">'
+            return '<' . array_push($links, '<a' . $attr . ' href="' . $protocol . '://' . $link . '">'
                 . rtrim($link, '/') . '</a>') . '>';
         }, $text);
     }
@@ -136,7 +136,7 @@ class TextExtension extends \Twig_Extension
         $regexp = '~([^\s<>]+?@[^\s<>]+?\.[^\s<>]+)(?<![\.,:;\?!\'"\|])~';
         
         return preg_replace_callback($regexp, function ($match) use (&$links, $attr) {
-            return '<' . array_push($links, '<a' . $attr . ' href="mailto:' . $match[1]  . '">' . $match[1] . '</a>')
+            return '<' . array_push($links, '<a' . $attr . ' href="mailto:' . $match[1] . '">' . $match[1] . '</a>')
                 . '>';
         }, $text);
     }
@@ -154,7 +154,7 @@ class TextExtension extends \Twig_Extension
     protected function linkifyOther($protocol, $text, array &$links, $attr, $mode)
     {
         if (strpos($protocol, ':') === false) {
-            $protocol .= in_array($protocol, ['ftp', 'tftp', 'ssh', 'scp'])  ? '://' : ':';
+            $protocol .= in_array($protocol, ['ftp', 'tftp', 'ssh', 'scp']) ? '://' : ':';
         }
         
         $regexp = $mode != 'all'
@@ -162,7 +162,7 @@ class TextExtension extends \Twig_Extension
             : '~([^\s<>]+)(?<![\.,:])~i';
         
         return preg_replace_callback($regexp, function ($match) use ($protocol, &$links, $attr) {
-            return '<' . array_push($links, '<a' . $attr . ' href="' . $protocol . $match[1]  . '">' . $match[1]
+            return '<' . array_push($links, '<a' . $attr . ' href="' . $protocol . $match[1] . '">' . $match[1]
                 . '</a>') . '>';
         }, $text);
     }

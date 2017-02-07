@@ -52,7 +52,7 @@ class ArrayExtension extends \Twig_Extension
      */
     public function product($array)
     {
-       return isset($array) ? array_product((array)$array) : null;
+        return isset($array) ? array_product((array)$array) : null;
     }
     
     /**
@@ -63,7 +63,7 @@ class ArrayExtension extends \Twig_Extension
      */
     public function values($array)
     {
-       return isset($array) ? array_values((array)$array) : null;
+        return isset($array) ? array_values((array)$array) : null;
     }
     
     /**

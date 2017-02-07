@@ -31,7 +31,7 @@ class DateExtension extends \Twig_Extension
     /**
      * Callback for Twig to get all the filters.
      * 
-     * @return \Twig_Filter[]
+     * @return \Twig_SimpleFilter[]
      */
     public function getFilters()
     {
@@ -129,7 +129,7 @@ class DateExtension extends \Twig_Extension
         if (
             (is_int($datetype) && $datetype !== \IntlDateFormatter::NONE) ||
             (is_int($timetype) && $timetype !== \IntlDateFormatter::NONE)
-        ){
+        ) {
             $pattern = \IntlDateFormatter::create(
                 \Locale::getDefault(),
                 is_int($datetype) ? $datetype : \IntlDateFormatter::NONE,
