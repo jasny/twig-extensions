@@ -44,6 +44,20 @@ class DateExtension extends \Twig_Extension
         ];
     }
 
+    /**
+     * Turn a value into a DateTime object
+     * 
+     * @param string|int|\DateTime $date
+     * @return \DateTime
+     */
+    protected function valueToDateTime($date)
+    {
+        if (!$date instanceof \DateTime) {
+            $date = is_int($date) ? \DateTime::createFromFormat('U', $date) : new \DateTime((string)$date);
+        }
+        
+        return $date;
+    }
     
     /**
      * Get configured intl date formatter.
@@ -55,8 +69,8 @@ class DateExtension extends \Twig_Extension
      */
     protected function getDateFormatter($dateFormat, $timeFormat, $calendar)
     {
-        $datetype = isset($dateFormat) ? $this->getFormat($dateFormat, $calendar) : null;
-        $timetype = isset($timeFormat) ? $this->getFormat($timeFormat, $calendar) : null;
+        $datetype = isset($dateFormat) ? $this->getFormat($dateFormat) : null;
+        $timetype = isset($timeFormat) ? $this->getFormat($timeFormat) : null;
         
         $pattern = null;
         
@@ -82,21 +96,24 @@ class DateExtension extends \Twig_Extension
     /**
      * Format the date/time value as a string based on the current locale
      * 
-     * @param string $format    'short', 'medium', 'long', 'full'
+     * @param string|false $format  'short', 'medium', 'long', 'full', 'none' or false
      * @return int|null
      */
     protected function getFormat($format)
     {
-        switch ($format) {
-            case false:    $type = \IntlDateFormatter::NONE; break;
-            case 'short':  $type = \IntlDateFormatter::SHORT; break;
-            case 'medium': $type = \IntlDateFormatter::MEDIUM; break;
-            case 'long':   $type = \IntlDateFormatter::LONG; break;
-            case 'full':   $type = \IntlDateFormatter::FULL; break;
-            default:       $type = null;
+        if ($format === false) {
+            $format = 'none';
         }
         
-        return $type;
+        $types = [
+            'none' => \IntlDateFormatter::NONE,
+            'short' => \IntlDateFormatter::SHORT,
+            'medium' => \IntlDateFormatter::MEDIUM,
+            'long' => \IntlDateFormatter::LONG,
+            'full' => \IntlDateFormatter::FULL
+        ];
+        
+        return isset($types[$format]) ? $types[$format] : null;
     }
     
     /**
@@ -138,22 +155,19 @@ class DateExtension extends \Twig_Extension
     /**
      * Format the date and/or time value as a string based on the current locale
      * 
-     * @param DateTime|int|string $date
-     * @param string              $dateFormat  null, 'short', 'medium', 'long', 'full' or pattern
-     * @param string              $timeFormat  null, 'short', 'medium', 'long', 'full' or pattern
-     * @param string              $calendar    'gregorian' or 'traditional'
+     * @param \DateTime|int|string $value
+     * @param string               $dateFormat  null, 'short', 'medium', 'long', 'full' or pattern
+     * @param string               $timeFormat  null, 'short', 'medium', 'long', 'full' or pattern
+     * @param string               $calendar    'gregorian' or 'traditional'
      * @return string
      */
-    protected function formatLocal($date, $dateFormat, $timeFormat, $calendar = 'gregorian')
+    protected function formatLocal($value, $dateFormat, $timeFormat, $calendar = 'gregorian')
     {
-        if (!isset($date)) {
+        if (!isset($value)) {
             return null;
         }
         
-        if (!$date instanceof \DateTime) {
-            $date = is_int($date) ? \DateTime::createFromFormat('U', $date) : new \DateTime((string)$date);
-        }
-        
+        $date = $this->valueToDateTime($value);
         $formatter = $this->getDateFormatter($dateFormat, $timeFormat, $calendar);
         
         return $formatter->format($date->getTimestamp());
@@ -299,18 +313,16 @@ class DateExtension extends \Twig_Extension
     /**
      * Get the age (in years) based on a date.
      * 
-     * @param DateTime|string $date
+     * @param DateTime|string $value
      * @return int
      */
-    public function age($date)
+    public function age($value)
     {
-        if (!isset($date)) {
+        if (!isset($value)) {
             return null;
         }
         
-        if (!$date instanceof \DateTime) {
-            $date = is_int($date) ? \DateTime::createFromFormat('U', $date) : new \DateTime((string)$date);
-        }
+        $date = $this->valueToDateTime($value);
         
         return $date->diff(new \DateTime())->format('%y');
     }
