@@ -2,48 +2,88 @@
 
 namespace Jasny\Twig;
 
+use Jasny\Twig\ArrayExtension;
+use Jasny\Twig\TestHelper;
 
-class ArrayExtensionTest extends \PHPUnit_Framework_TestCase  {
-
-    private function buildEnv($template) {
-        $loader = new \Twig_Loader_Array(array(
-            'template' => $template,
-        ));
-        $twig = new \Twig_Environment($loader);
-        $twig->addExtension(new ArrayExtension());
-        return $twig;
-    }
+/**
+ * @covers Jasny\Twig\ArrayExtension
+ */
+class ArrayExtensionTest extends \PHPUnit_Framework_TestCase
+{
+    use TestHelper;
     
-    private function process($template, $data = array()) {
-        $twig = $this->buildEnv($template);
-        $result = $twig->render('template', $data);
-        return $result;
-    }
-    
-    private function check($expected, $template, $data = array()) {
-        $result = $this->process($template, $data);
-        $this->assertEquals($expected, $result);
-    }
-    
-    public function testSum() {
-        $data = array(1, 2, 3, 4);
-        $this->check(10, '{{ data|sum() }}', array('data' => $data));
+    protected function getExtension()
+    {
+        return new ArrayExtension();
     }
 
-    public function testProduct() {
-        $data = array(1, 2, 3, 4);
-        $this->check(24, '{{ data|product() }}', array('data' => $data));
+
+    public function testSum()
+    {
+        $data = [1, 2, 3, 4];
+        
+        $this->assertRender('10', '{{ data|sum }}', compact('data'));
     }
 
-    public function testValues() {
-        $data = array(1, 2, 3);
-        $this->check('1-2-3-', '{% for v in data|values() %}{{v}}-{% endfor %}', array('data' => $data));
+    public function testProduct()
+    {
+        $data = [1, 2, 3, 4];
+        
+        $this->assertRender('24', '{{ data|product }}', compact('data'));
     }
 
-    public function testHtmlAttr() {
-        $data = array('href' => 'foo.html', 'class' => 'big small');
-        $this->check('href="foo.html" class="big small"', '{{ data|html_attr|raw }}', array('data' => $data));
+    public function testValues()
+    {
+        $data = (object)['foo' => 1, 'bar' => 2, 'zoo' => 3];
+        
+        $this->assertRender('1-2-3', '{{ data|values|join("-") }}', compact('data'));
     }
 
     
+    public function testAsArrayWithObject()
+    {
+        $data = (object)['foo' => 1, 'bar' => 2, 'zoo' => 3];
+        
+        $this->assertRender('foo-bar-zoo', '{{ data|as_array|keys|join("-") }}', compact('data'));
+    }
+    
+    public function testAsArrayWithString()
+    {
+        $data = 'foo';
+        
+        $this->assertRender('foo', '{{ data|as_array|join("-") }}', compact('data'));
+    }
+    
+    public function testHtmlAttr()
+    {
+        $data = ['href' => 'foo.html', 'class' => 'big small', 'checked' => true, 'disabled' => false];
+        
+        $this->assertRender(
+            'href="foo.html" class="big small" checked="checked"',
+            '{{ data|html_attr|raw }}',
+            compact('data')
+        );
+    }
+    
+    
+    public function filterProvider()
+    {
+        return [
+            ['sum'],
+            ['product'],
+            ['values'],
+            ['as_array'],
+            ['html_attr']
+        ];
+    }
+    
+    /**
+     * @dataProvider filterProvider
+     * 
+     * @param string $filter
+     */
+    public function testWithNull($filter)
+    {
+        $this->assertRender('-', '{{ null|' . $filter . '("//")|default("-") }}');
+    }    
 }

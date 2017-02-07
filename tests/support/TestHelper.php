@@ -39,7 +39,7 @@ trait TestHelper
      * @param array $data
      * @return string
      */
-    protected function render($template, $data = [])
+    protected function render($template, array $data = [])
     {
         $twig = $this->buildEnv($template);
         $result = $twig->render('template', $data);
@@ -52,10 +52,11 @@ trait TestHelper
      * 
      * @param string $expected
      * @param string $template
+     * @param array  $data
      */
-    protected function assertRender($expected, $template)
+    protected function assertRender($expected, $template, array $data = [])
     {
-        $result = $this->render($template);
+        $result = $this->render($template, $data);
         
         $this->assertEquals($expected, (string)$result);
     }

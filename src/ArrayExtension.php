@@ -3,9 +3,7 @@
 namespace Jasny\Twig;
 
 /**
- * Brings PHP's array functions to Twig
- * 
- * @author Arnold Daniels <arnold@jasny.net>
+ * Expose PHP's array functions to Twig
  */
 class ArrayExtension extends \Twig_Extension
 {
@@ -25,13 +23,13 @@ class ArrayExtension extends \Twig_Extension
      */
     public function getFilters()
     {
-        return array(
-            'sum' => new \Twig_SimpleFilter('sum', array($this, 'sum')),
-            'product' => new \Twig_SimpleFilter('product', array($this, 'product')),
-            'values' => new \Twig_SimpleFilter('values', array($this, 'values')),
-            'as_array' => new \Twig_SimpleFilter('as_array', array($this, 'asArray')),
-            'html_attr' => new \Twig_SimpleFilter('html_attr', array($this, 'HTMLAttributes')),
-        );
+        return [
+            new \Twig_SimpleFilter('sum', [$this, 'sum']),
+            new \Twig_SimpleFilter('product', [$this, 'product']),
+            new \Twig_SimpleFilter('values', [$this, 'values']),
+            new \Twig_SimpleFilter('as_array', [$this, 'asArray']),
+            new \Twig_SimpleFilter('html_attr', [$this, 'htmlAttributes']),
+        ];
     }
     
 
@@ -43,8 +41,7 @@ class ArrayExtension extends \Twig_Extension
      */
     public function sum($array)
     {
-       if (!isset($array)) return null;
-       return array_sum((array)$array);
+        return isset($array) ? array_sum((array)$array) : null;
     }
     
     /**
@@ -55,32 +52,29 @@ class ArrayExtension extends \Twig_Extension
      */
     public function product($array)
     {
-       if (!isset($array)) return null;
-       return array_product((array)$array);
+       return isset($array) ? array_product((array)$array) : null;
     }
     
     /**
-     * Return all the values of an array
+     * Return all the values of an array or object
      * 
-     * @param array $array
-     * @return int
+     * @param array|object $array
+     * @return array
      */
     public function values($array)
     {
-       if (!isset($array)) return null;
-       return array_values((array)$array);
+       return isset($array) ? array_values((array)$array) : null;
     }
     
-    
     /**
-     * Cast an object to an array
+     * Cast value to an array
      * 
-     * @param object $object
+     * @param object|mixed $value
      * @return array
      */
-    public function asArray($object)
+    public function asArray($value)
     {
-        return (array)$object;
+        return is_object($value) ? get_object_vars($value) : (array)$value;
     }
     
     /**
@@ -89,17 +83,25 @@ class ArrayExtension extends \Twig_Extension
      * @param mixed $array
      * @return string
      */
-    public function HTMLAttributes($array)
+    public function htmlAttributes($array)
     {
-        if (!isset($array)) return null;
+        if (!isset($array)) {
+            return null;
+        }
        
         $str = "";
-        foreach ($array as $key=>$value) {
-            if (!isset($value) || $value === false) continue;
+        foreach ($array as $key => $value) {
+            if (!isset($value) || $value === false) {
+                continue;
+            }
             
-            if ($value === true) $value = $key;
+            if ($value === true) {
+                $value = $key;
+            }
+            
             $str .= ' ' . $key . '="' . addcslashes($value, '"') . '"';
         }
+        
         return trim($str);
     }
 }
