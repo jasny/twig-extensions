@@ -97,7 +97,7 @@ class TextExtension extends \Twig_Extension
             return null;
         }
         
-        return strlen($value) <= $length ? $value : substr($value, 0, $length - strip_tags($replace)) . $replace;
+        return strlen($value) <= $length ? $value : substr($value, 0, $length - strlen($replace)) . $replace;
     }
     
     /**

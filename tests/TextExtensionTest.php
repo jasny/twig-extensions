@@ -50,9 +50,25 @@ class TextExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertRender("foo..", "{{ 'fooXbarXbaz'|less('..', 'X') }}");
     }
     
+    public function testLessNoPageBreak()
+    {
+        $this->assertRender("foo bar", "{{ 'foo bar'|less }}");
+    }
+    
+    
     public function testTruncate()
     {
-        $this->assertRender("foo ..", "{{ 'foo bar baz'|truncate(4, '..') }}");
+        $this->assertRender("foo...", "{{ 'foo bar baz'|truncate(6) }}");
+    }
+    
+    public function testTruncateCustom()
+    {
+        $this->assertRender("foo ..", "{{ 'foo bar baz'|truncate(6, '..') }}");
+    }
+    
+    public function testTruncateToHigh()
+    {
+        $this->assertRender("foo bar baz", "{{ 'foo bar baz'|truncate(100) }}");
     }
     
     
