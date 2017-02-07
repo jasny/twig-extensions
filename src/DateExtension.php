@@ -71,26 +71,16 @@ class DateExtension extends \Twig_Extension
     {
         $datetype = isset($dateFormat) ? $this->getFormat($dateFormat) : null;
         $timetype = isset($timeFormat) ? $this->getFormat($timeFormat) : null;
-        
-        $pattern = null;
-        
-        if ($datetype === null || $timetype === null) {
-            $pattern = $this->getDatePattern(
-                isset($datetype) ? $datetype : ($dateFormat ?: \IntlDateFormatter::SHORT),
-                isset($timetype) ? $timetype : ($timeFormat ?: \IntlDateFormatter::SHORT)
-            );
-        }
-        
+
         $calendarConst = $calendar === 'traditional' ? \IntlDateFormatter::TRADITIONAL : \IntlDateFormatter::GREGORIAN;
         
-        return new \IntlDateFormatter(
-            \Locale::getDefault(),
-            $datetype,
-            $timetype,
-            null,
-            $calendarConst,
-            $pattern
+        $pattern = $this->getDateTimePattern(
+            isset($datetype) ? $datetype : $dateFormat,
+            isset($timetype) ? $timetype : $timeFormat,
+            $calendarConst
         );
+        
+        return new \IntlDateFormatter(\Locale::getDefault(), $datetype, $timetype, null, $calendarConst, $pattern);
     }
     
     /**
@@ -117,7 +107,29 @@ class DateExtension extends \Twig_Extension
     }
     
     /**
-     * Default date pattern is short date pattern with 4 digit year
+     * Get the date/time pattern.
+     * 
+     * @param int|string $datetype
+     * @param int|string $timetype
+     * @param string $calendar
+     * @return string
+     */
+    protected function getDateTimePattern($datetype, $timetype, $calendar = \IntlDateFormatter::GREGORIAN)
+    {
+        if (is_int($datetype) && is_int($timetype)) {
+            return null;
+        }
+        
+        return $this->getDatePattern(
+            isset($datetype) ? $datetype : \IntlDateFormatter::SHORT,
+            isset($timetype) ? $timetype : \IntlDateFormatter::SHORT,
+            $calendar
+        );
+    }
+    
+    /**
+     * Get the date and/or time pattern
+     * Default date pattern is short date pattern with 4 digit year.
      * 
      * @param int|string $datetype
      * @param int|string $timetype
