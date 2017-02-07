@@ -194,7 +194,7 @@ class DateExtension extends \Twig_Extension
      * @param string              $calendar  'gregorian' or 'traditional'
      * @return string
      */
-    public function localTime($date, $format='short', $calendar='gregorian')
+    public function localTime($date, $format = 'short', $calendar = 'gregorian')
     {
         return $this->formatLocal($date, false, $format, $calendar);
     }
