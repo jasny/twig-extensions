@@ -288,10 +288,10 @@ class DateExtension extends \Twig_Extension
      * 
      * @param int    $value     Time in seconds
      * @param array  $units     Time units (seconds, minutes, hours, days, weeks, years)
-     * @param string $seperator
+     * @param string $separator
      * @return string
      */
-    public function duration($value, $units = ['s', 'm', 'h', 'd', 'w', 'y'], $seperator = ' ')
+    public function duration($value, $units = ['s', 'm', 'h', 'd', 'w', 'y'], $separator = ' ')
     {
         if (!isset($value)) {
             return null;
@@ -302,30 +302,30 @@ class DateExtension extends \Twig_Extension
         
         $duration = '';
         if (isset($years) && isset($units[5])) {
-            $duration .= $seperator . $years . $units[5];
+            $duration .= $separator . $years . $units[5];
         }
         
         if (isset($weeks) && isset($units[4])) {
-            $duration .= $seperator . $weeks . $units[4];
+            $duration .= $separator . $weeks . $units[4];
         }
         
         if (isset($days) && isset($units[3])) {
-            $duration .= $seperator . $days . $units[3];
+            $duration .= $separator . $days . $units[3];
         }
         
         if (isset($hours) && isset($units[2])) {
-            $duration .= $seperator . $hours . $units[2];
+            $duration .= $separator . $hours . $units[2];
         }
         
         if (isset($minutes) && isset($units[1])) {
-            $duration .= $seperator . $minutes . $units[1];
+            $duration .= $separator . $minutes . $units[1];
         }
         
         if (isset($seconds) && isset($units[0])) {
-            $duration .= $seperator . $seconds . $units[0];
+            $duration .= $separator . $seconds . $units[0];
         }
         
-        return trim($duration, $seperator);
+        return trim($duration, $separator);
     }
 
     /**
