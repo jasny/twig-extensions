@@ -78,7 +78,11 @@ class TextExtension extends \Twig_Extension
         if (!isset($value)) {
             return null;
         }
-        
+
+        if (function_exists('mb_stripos') && function_exists('mb_substr')) {
+            $pos = mb_stripos($value, $break);
+            return $pos === false ? $value : mb_substr($value, 0, $pos) . $replace;
+        }
         $pos = stripos($value, $break);
         return $pos === false ? $value : substr($value, 0, $pos) . $replace;
     }
@@ -96,7 +100,9 @@ class TextExtension extends \Twig_Extension
         if (!isset($value)) {
             return null;
         }
-        
+        if (function_exists('mb_strlen') && function_exists('mb_substr')) {
+            return mb_strlen($value) <= $length ? $value : mb_substr($value, 0, $length - strlen($replace)) . $replace;
+        }
         return strlen($value) <= $length ? $value : substr($value, 0, $length - strlen($replace)) . $replace;
     }
     
@@ -118,7 +124,7 @@ class TextExtension extends \Twig_Extension
         return preg_replace_callback($regexp, function ($match) use ($protocol, &$links, $attr) {
             if ($match[1]) $protocol = $match[1];
             $link = $match[2] ?: $match[3];
-            
+
             return '<' . array_push($links, '<a' . $attr . ' href="' . $protocol . '://' . $link . '">'
                 . rtrim($link, '/') . '</a>') . '>';
         }, $text);
