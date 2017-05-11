@@ -134,7 +134,7 @@ class PcreExtension extends \Twig_Extension
      * 
      * @param array  $values
      * @param string $pattern
-     * @param strign $flags    Optional 'invert' to return entries that do not match the given pattern.
+     * @param string $flags    Optional 'invert' to return entries that do not match the given pattern.
      * @return array
      */
     public function grep($values, $pattern, $flags = '')

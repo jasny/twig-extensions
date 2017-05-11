@@ -111,7 +111,7 @@ class DateExtension extends \Twig_Extension
      * 
      * @param int|string $datetype
      * @param int|string $timetype
-     * @param string $calendar
+     * @param int        $calendar
      * @return string
      */
     protected function getDateTimePattern($datetype, $timetype, $calendar = \IntlDateFormatter::GREGORIAN)
