@@ -108,6 +108,7 @@ class TextExtension extends \Twig_Extension
      * @param array  $links     OUTPUT
      * @param string $attr
      * @param string $mode
+     * @return string
      */
     protected function linkifyHttp($protocol, $text, array &$links, $attr, $mode)
     {
@@ -130,6 +131,7 @@ class TextExtension extends \Twig_Extension
      * @param string $text
      * @param array  $links     OUTPUT
      * @param string $attr
+     * @return string
      */
     protected function linkifyMail($text, array &$links, $attr)
     {
@@ -150,6 +152,7 @@ class TextExtension extends \Twig_Extension
      * @param array  $links     OUTPUT
      * @param string $attr
      * @param string $mode
+     * @return string
      */
     protected function linkifyOther($protocol, $text, array &$links, $attr, $mode)
     {
