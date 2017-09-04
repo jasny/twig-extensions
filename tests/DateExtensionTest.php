@@ -34,22 +34,22 @@ class DateExtensionTest extends \PHPUnit_Framework_TestCase
             ['20|09|2015', "20|09|2015", "{{ '20-09-2015'|localdate('dd|MM|yyyy') }}"],
             
             ['11:14 PM', "23:14", "{{ '23:14:12'|localtime }}"],
-            ['11:14:12 PM GMT', "23:14:12 GMT", "{{ '23:14:12'|localtime('long') }}"],
+            ['11:14:12 PM UTC', "23:14:12 UTC", "{{ '23:14:12'|localtime('long') }}"],
             ['11:14 PM', "23:14", "{{ '23:14:12'|localtime('short') }}"],
-            ['11:14:12 PM GMT', "23:14:12 GMT", "{{ '23:14:12'|localtime('full') }}"],
+            ['11:14:12 PM Coordinated Universal Time', "23:14:12 Gecoördineerde wereldtijd", "{{ '23:14:12'|localtime('full') }}"],
             ['23|14|12', "23|14|12", "{{ '23:14:12'|localtime('HH|mm|ss') }}"],
             
             // NOTE: a `replace` is used to remove the comma, which seems to be inconsistant accross environments.
             ['9/20/2015 11:14 PM', '20-09-2015 23:14', "{{ '20-09-2015 23:14:12'|localdatetime|replace({',': ''}) }}"],
             ['20|23', '20|23', "{{ '20-09-2015 23:14:12'|localdatetime('dd|HH') }}"],
             [
-                '9/20/15 11:14:12 PM GMT',
-                '20-09-15 23:14:12 GMT',
+                '9/20/15 11:14:12 PM Coordinated Universal Time',
+                '20-09-15 23:14:12 Gecoördineerde wereldtijd',
                 "{{ '20-09-2015 23:14:12'|localdatetime({date: 'short', time: 'full'})|replace({',': ''}) }}"
             ],
             [
-                '20150920 11:14:12 PM GMT',
-                '20150920 23:14:12 GMT',
+                '20150920 11:14:12 PM Coordinated Universal Time',
+                '20150920 23:14:12 Gecoördineerde wereldtijd',
                 "{{ '20-09-2015 23:14:12'|localdatetime({date: 'yyyyMMdd', time: 'full'}) }}"
             ]
         ];
