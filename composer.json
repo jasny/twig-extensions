@@ -31,6 +31,7 @@
     "require-dev": {
         "ext-intl": "*",
         "ext-pcre": "*",
+        "jasny/php-code-quality": "^2.1",
         "phpunit/phpunit": "^5.0"
     },
     "autoload-dev": {
