@@ -23,7 +23,6 @@ class DateExtensionTest extends \PHPUnit_Framework_TestCase
         return new DateExtension();
     }
 
-
     public function localDateTimeProvider()
     {
         return [
@@ -85,9 +84,7 @@ class DateExtensionTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertRender($nl, $template);
-
     }
-
 
     public function durationProvider()
     {
@@ -121,7 +118,6 @@ class DateExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertRender($expect, $template);
     }
 
-
     public function ageProvider()
     {
         $time = time() - (((32 * 365) + 100) * 24 * 3600);
@@ -144,7 +140,6 @@ class DateExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertRender($expect, $template);
     }
 
-    
     public function filterProvider()
     {
         return [
