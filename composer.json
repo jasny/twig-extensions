@@ -16,8 +16,8 @@
         "source": "https://github.com/jasny/twig-extensions"
     },
     "require": {
-        "php": ">=5.6.0",
-        "twig/twig": "^1.0"
+        "php": ">=7.0.0 | >=5.6.0",
+        "twig/twig": "^2.0 | ^1.12"
     },
     "suggest": {
         "ext-intl": "Required for the use of the LocalDate Twig extension",
@@ -31,7 +31,8 @@
     "require-dev": {
         "ext-intl": "*",
         "ext-pcre": "*",
-        "jasny/php-code-quality": "^2.1"
+        "jasny/php-code-quality": "^2.1",
+        "phpunit/phpunit": "^5.0"
     },
     "autoload-dev": {
         "classmap": [
