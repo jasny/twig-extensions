@@ -4,6 +4,7 @@
     "keywords": ["templating", "PCRE", "preg", "regex", "date", "time", "datetime", "text", "array"],
     "license": "MIT",
     "homepage": "http://github.com/jasny/twig-extensions#README",
+    "type": "patternlab-plugin",
     "authors": [
         {
             "name": "Arnold Daniels",
