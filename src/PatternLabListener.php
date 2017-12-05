@@ -1,12 +1,9 @@
 <?php
 
 /*!
- * Twig Extensions Listener Class
+ * Jasny Twig Extensions Listener Class
  *
- * Copyright (c) 2016 Dave Olsen, http://dmolsen.com
- * Licensed under the MIT license
- *
- * Adds Twig Extensions support to the Twig Pattern Engine
+ * Adds Jasny Twig Extensions support to the Twig Pattern Engine
  *
  */
 
