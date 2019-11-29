@@ -89,11 +89,11 @@ Exposes [PCRE](http://www.php.net/pcre) to Twig.
 * preg_split   - Split text into an array using a regular expression
 
 ```
-{% if client.email|preg_match('/^.+@.+\.\w+$/) %}Email: {{ client.email }}{% endif %}
+{% if client.email|preg_match('/^.+@.+\.\w+$/') %}Email: {{ client.email }}{% endif %}
 Website: {{ client.website|preg_replace('~^https?://~')
 First name: {{ client.fullname|preg_get('/^\S+/') }}
 <ul>
-  {% for item in items|preg_split('/\s+/')|grep_filter('/-test$/', 'invert') %}
+  {% for item in items|preg_split('/\s+/')|preg_filter('/-test$/', 'invert') %}
     <li>{{ item }}</li>
   {% endfor %}
 </ul>
