@@ -2,12 +2,16 @@
 
 namespace Jasny\Twig;
 
+use Twig\Error\RuntimeError;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+
 /**
  * Expose the PCRE functions to Twig.
- * 
+ *
  * @see http://php.net/manual/en/book.pcre.php
  */
-class PcreExtension extends \Twig_Extension
+class PcreExtension extends AbstractExtension
 {
     /**
      * Class constructor
@@ -21,7 +25,7 @@ class PcreExtension extends \Twig_Extension
 
     /**
      * Return extension name
-     * 
+     *
      * @return string
      */
     public function getName()
@@ -35,21 +39,21 @@ class PcreExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('preg_quote', [$this, 'quote']),
-            new \Twig_SimpleFilter('preg_match', [$this, 'match']),
-            new \Twig_SimpleFilter('preg_get', [$this, 'get']),
-            new \Twig_SimpleFilter('preg_get_all', [$this, 'getAll']),
-            new \Twig_SimpleFilter('preg_grep', [$this, 'grep']),
-            new \Twig_SimpleFilter('preg_replace', [$this, 'replace']),
-            new \Twig_SimpleFilter('preg_filter', [$this, 'filter']),
-            new \Twig_SimpleFilter('preg_split', [$this, 'split']),
+            new TwigFilter('preg_quote', [$this, 'quote']),
+            new TwigFilter('preg_match', [$this, 'match']),
+            new TwigFilter('preg_get', [$this, 'get']),
+            new TwigFilter('preg_get_all', [$this, 'getAll']),
+            new TwigFilter('preg_grep', [$this, 'grep']),
+            new TwigFilter('preg_replace', [$this, 'replace']),
+            new TwigFilter('preg_filter', [$this, 'filter']),
+            new TwigFilter('preg_split', [$this, 'split']),
         ];
     }
 
-    
+
     /**
      * Check that the regex doesn't use the eval modifier
-     * 
+     *
      * @param string $pattern
      * @throws \LogicException
      */
@@ -57,16 +61,16 @@ class PcreExtension extends \Twig_Extension
     {
         $pos = strrpos($pattern, $pattern[0]);
         $modifiers = substr($pattern, $pos + 1);
-        
+
         if (strpos($modifiers, 'e') !== false) {
-            throw new \Twig_Error_Runtime("Using the eval modifier for regular expressions is not allowed");
+            throw new RuntimeError("Using the eval modifier for regular expressions is not allowed");
         }
     }
-    
+
 
     /**
      * Quote regular expression characters.
-     * 
+     *
      * @param string $value
      * @param string $delimiter
      * @return string
@@ -76,13 +80,13 @@ class PcreExtension extends \Twig_Extension
         if (!isset($value)) {
             return null;
         }
-        
+
         return preg_quote($value, $delimiter);
     }
 
     /**
      * Perform a regular expression match.
-     * 
+     *
      * @param string $value
      * @param string $pattern
      * @return boolean
@@ -92,13 +96,13 @@ class PcreExtension extends \Twig_Extension
         if (!isset($value)) {
             return null;
         }
-        
+
         return preg_match($pattern, $value);
     }
 
     /**
      * Perform a regular expression match and return a matched group.
-     * 
+     *
      * @param string $value
      * @param string $pattern
      * @return string
@@ -108,13 +112,13 @@ class PcreExtension extends \Twig_Extension
         if (!isset($value)) {
             return null;
         }
-        
+
         return preg_match($pattern, $value, $matches) && isset($matches[$group]) ? $matches[$group] : null;
     }
 
     /**
      * Perform a regular expression match and return the group for all matches.
-     * 
+     *
      * @param string $value
      * @param string $pattern
      * @return array
@@ -124,14 +128,14 @@ class PcreExtension extends \Twig_Extension
         if (!isset($value)) {
             return null;
         }
-        
+
         return preg_match_all($pattern, $value, $matches, PREG_PATTERN_ORDER) && isset($matches[$group])
             ? $matches[$group] : [];
     }
 
     /**
      * Perform a regular expression match and return an array of entries that match the pattern
-     * 
+     *
      * @param array  $values
      * @param string $pattern
      * @param string $flags    Optional 'invert' to return entries that do not match the given pattern.
@@ -142,17 +146,17 @@ class PcreExtension extends \Twig_Extension
         if (!isset($values)) {
             return null;
         }
-        
+
         if (is_string($flags)) {
             $flags = $flags === 'invert' ? PREG_GREP_INVERT : 0;
         }
-        
+
         return preg_grep($pattern, $values, $flags);
     }
 
     /**
      * Perform a regular expression search and replace.
-     * 
+     *
      * @param string $value
      * @param string $pattern
      * @param string $replacement
@@ -162,17 +166,17 @@ class PcreExtension extends \Twig_Extension
     public function replace($value, $pattern, $replacement = '', $limit = -1)
     {
         $this->assertNoEval($pattern);
-        
+
         if (!isset($value)) {
             return null;
         }
-        
+
         return preg_replace($pattern, $replacement, $value, $limit);
     }
 
     /**
      * Perform a regular expression search and replace, returning only matched subjects.
-     * 
+     *
      * @param string $value
      * @param string $pattern
      * @param string $replacement
@@ -182,17 +186,17 @@ class PcreExtension extends \Twig_Extension
     public function filter($value, $pattern, $replacement = '', $limit = -1)
     {
         $this->assertNoEval($pattern);
-        
+
         if (!isset($value)) {
             return null;
         }
-        
+
         return preg_filter($pattern, $replacement, $value, $limit);
     }
 
     /**
      * Split text into an array using a regular expression.
-     * 
+     *
      * @param string $value
      * @param string $pattern
      * @return array
@@ -202,7 +206,7 @@ class PcreExtension extends \Twig_Extension
         if (!isset($value)) {
             return null;
         }
-        
+
         return preg_split($pattern, $value);
     }
 }
