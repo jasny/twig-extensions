@@ -59,6 +59,10 @@ class DateExtension extends AbstractExtension
             $date = is_int($date) ? \DateTime::createFromFormat('U', $date) : new \DateTime((string)$date);
         }
 
+        if ($date === false) {
+            throw new RuntimeError("Invalid date '$date'");
+        }
+
         return $date;
     }
 
