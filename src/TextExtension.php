@@ -120,7 +120,9 @@ class TextExtension extends AbstractExtension
             : '~(?:(https?)://([^\s<>]+)|(?<!\w@)\b([^\s<>@]+?\.[^\s<>]+)(?<![\.,:]))~i';
 
         return preg_replace_callback($regexp, function ($match) use ($protocol, &$links, $attr) {
-            if ($match[1]) $protocol = $match[1];
+            if ($match[1]) {
+                $protocol = $match[1];
+            }
             $link = $match[2] ?: $match[3];
 
             return '<' . array_push($links, '<a' . $attr . ' href="' . $protocol . '://' . $link . '">'
@@ -205,9 +207,15 @@ class TextExtension extends AbstractExtension
         foreach ((array)$protocols as $protocol) {
             switch ($protocol) {
                 case 'http':
-                case 'https':   $text = $this->linkifyHttp($protocol, $text, $links, $attr, $mode); break;
-                case 'mail':    $text = $this->linkifyMail($text, $links, $attr); break;
-                default:        $text = $this->linkifyOther($protocol, $text, $links, $attr, $mode); break;
+                case 'https':
+                    $text = $this->linkifyHttp($protocol, $text, $links, $attr, $mode);
+                    break;
+                case 'mail':
+                    $text = $this->linkifyMail($text, $links, $attr);
+                    break;
+                default:
+                    $text = $this->linkifyOther($protocol, $text, $links, $attr, $mode);
+                    break;
             }
         }
 

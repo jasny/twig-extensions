@@ -4,11 +4,13 @@ namespace Jasny\Twig;
 
 use Jasny\Twig\PcreExtension;
 use Jasny\Twig\TestHelper;
+use PHPUnit\Framework\TestCase;
+use Twig\Error\RuntimeError as TwigRuntimeError;
 
 /**
  * @covers Jasny\Twig\PcreExtension
  */
-class PcreExtensionTest extends \PHPUnit_Framework_TestCase
+class PcreExtensionTest extends TestCase
 {
     use TestHelper;
 
@@ -44,11 +46,9 @@ class PcreExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertRender('NO', '{% if "fod"|preg_match("/oo/") %}YES{% else %}NO{% endif %}');
     }
 
-    /**
-     * @expectedException \Twig\Error\RuntimeError
-     */
     public function testPregMatchError()
     {
+        $this->expectException(TwigRuntimeError::class);
         $this->render('{% if "fod"|preg_match("/o//o/") %}YES{% else %}NO{% endif %}');
     }
 
@@ -116,11 +116,9 @@ class PcreExtensionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @expectedException Twig\Error\RuntimeError
-     */
     public function testReplaceAssertNoEval()
     {
+        $this->expectException(TwigRuntimeError::class);
         $this->render('{{ "foo"|preg_replace("/o/ei", "strtoupper") }}');
     }
 
@@ -133,11 +131,9 @@ class PcreExtensionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @expectedException Twig\Error\RuntimeError
-     */
     public function testFilterAssertNoEval()
     {
+        $this->expectException(TwigRuntimeError::class);
         $this->render('{{ "foo"|preg_filter("/o/ei", "strtoupper") }}');
     }
 

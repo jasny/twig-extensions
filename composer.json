@@ -16,7 +16,7 @@
         "source": "https://github.com/jasny/twig-extensions"
     },
     "require": {
-        "php": ">=7.0.0 | >=5.6.0",
+        "php": ">=7.0.0",
         "twig/twig": "^2.0 | ^3.0"
     },
     "suggest": {
@@ -29,10 +29,10 @@
         }
     },
     "require-dev": {
+        "php": ">=7.2.0",
         "ext-intl": "*",
         "ext-pcre": "*",
-        "jasny/php-code-quality": "^2.1",
-        "phpunit/phpunit": "^5.0"
+        "jasny/php-code-quality": "^2.5"
     },
     "autoload-dev": {
         "classmap": [

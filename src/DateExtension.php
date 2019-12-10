@@ -2,6 +2,7 @@
 
 namespace Jasny\Twig;
 
+use Twig\Error\RuntimeError;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -57,6 +58,10 @@ class DateExtension extends AbstractExtension
     {
         if (!$date instanceof \DateTime) {
             $date = is_int($date) ? \DateTime::createFromFormat('U', $date) : new \DateTime((string)$date);
+        }
+
+        if ($date === false) {
+            throw new RuntimeError("Invalid date '$date'");
         }
 
         return $date;
@@ -197,9 +202,9 @@ class DateExtension extends AbstractExtension
     /**
      * Format the date value as a string based on the current locale
      *
-     * @param DateTime|int|string $date
-     * @param string              $format    null, 'short', 'medium', 'long', 'full' or pattern
-     * @param string              $calendar  'gregorian' or 'traditional'
+     * @param \DateTime|int|string $date
+     * @param string               $format    null, 'short', 'medium', 'long', 'full' or pattern
+     * @param string               $calendar  'gregorian' or 'traditional'
      * @return string
      */
     public function localDate($date, $format = null, $calendar = 'gregorian')
@@ -210,9 +215,9 @@ class DateExtension extends AbstractExtension
     /**
      * Format the time value as a string based on the current locale
      *
-     * @param DateTime|int|string $date
-     * @param string              $format    'short', 'medium', 'long', 'full' or pattern
-     * @param string              $calendar  'gregorian' or 'traditional'
+     * @param \DateTime|int|string $date
+     * @param string               $format    'short', 'medium', 'long', 'full' or pattern
+     * @param string               $calendar  'gregorian' or 'traditional'
      * @return string
      */
     public function localTime($date, $format = 'short', $calendar = 'gregorian')
@@ -223,9 +228,9 @@ class DateExtension extends AbstractExtension
     /**
      * Format the date/time value as a string based on the current locale
      *
-     * @param DateTime|int|string $date
-     * @param string              $format    date format, pattern or ['date'=>format, 'time'=>format)
-     * @param string              $calendar  'gregorian' or 'traditional'
+     * @param \DateTime|int|string $date
+     * @param string               $format    date format, pattern or ['date'=>format, 'time'=>format)
+     * @param string               $calendar  'gregorian' or 'traditional'
      * @return string
      */
     public function localDateTime($date, $format = null, $calendar = 'gregorian')
@@ -300,32 +305,14 @@ class DateExtension extends AbstractExtension
             return null;
         }
 
-        list($seconds, $minutes, $hours, $days, $weeks, $years) =
-            $this->splitDuration($value, count($units) - 1) + array_fill(0, 6, null);
+        $parts = $this->splitDuration($value, count($units) - 1) + array_fill(0, 6, null);
 
         $duration = '';
-        if (isset($years) && isset($units[5])) {
-            $duration .= $separator . $years . $units[5];
-        }
 
-        if (isset($weeks) && isset($units[4])) {
-            $duration .= $separator . $weeks . $units[4];
-        }
-
-        if (isset($days) && isset($units[3])) {
-            $duration .= $separator . $days . $units[3];
-        }
-
-        if (isset($hours) && isset($units[2])) {
-            $duration .= $separator . $hours . $units[2];
-        }
-
-        if (isset($minutes) && isset($units[1])) {
-            $duration .= $separator . $minutes . $units[1];
-        }
-
-        if (isset($seconds) && isset($units[0])) {
-            $duration .= $separator . $seconds . $units[0];
+        for ($i = 5; $i >= 0; $i--) {
+            if (isset($parts[$i]) && isset($units[$i])) {
+                $duration .= $separator . $parts[$i] . $units[$i];
+            }
         }
 
         return trim($duration, $separator);
@@ -334,7 +321,7 @@ class DateExtension extends AbstractExtension
     /**
      * Get the age (in years) based on a date.
      *
-     * @param DateTime|string $value
+     * @param \DateTime|string $value
      * @return int
      */
     public function age($value)
