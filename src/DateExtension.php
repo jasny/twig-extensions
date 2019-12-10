@@ -2,10 +2,13 @@
 
 namespace Jasny\Twig;
 
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+
 /**
  * Format a date based on the current locale in Twig
  */
-class DateExtension extends \Twig_Extension
+class DateExtension extends AbstractExtension
 {
     /**
      * Class constructor
@@ -17,10 +20,10 @@ class DateExtension extends \Twig_Extension
         }
     }
 
-    
+
     /**
      * Return extension name
-     * 
+     *
      * @return string
      */
     public function getName()
@@ -30,23 +33,23 @@ class DateExtension extends \Twig_Extension
 
     /**
      * Callback for Twig to get all the filters.
-     * 
-     * @return \Twig_SimpleFilter[]
+     *
+     * @return \Twig\TwigFilter[]
      */
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('localdate', [$this, 'localDate']),
-            new \Twig_SimpleFilter('localtime', [$this, 'localTime']),
-            new \Twig_SimpleFilter('localdatetime', [$this, 'localDateTime']),
-            new \Twig_SimpleFilter('duration', [$this, 'duration']),
-            new \Twig_SimpleFilter('age', [$this, 'age']),
+            new TwigFilter('localdate', [$this, 'localDate']),
+            new TwigFilter('localtime', [$this, 'localTime']),
+            new TwigFilter('localdatetime', [$this, 'localDateTime']),
+            new TwigFilter('duration', [$this, 'duration']),
+            new TwigFilter('age', [$this, 'age']),
         ];
     }
 
     /**
      * Turn a value into a DateTime object
-     * 
+     *
      * @param string|int|\DateTime $date
      * @return \DateTime
      */
@@ -55,13 +58,13 @@ class DateExtension extends \Twig_Extension
         if (!$date instanceof \DateTime) {
             $date = is_int($date) ? \DateTime::createFromFormat('U', $date) : new \DateTime((string)$date);
         }
-        
+
         return $date;
     }
-    
+
     /**
      * Get configured intl date formatter.
-     * 
+     *
      * @param string|null $dateFormat
      * @param string|null $timeFormat
      * @param string      $calendar
@@ -73,19 +76,19 @@ class DateExtension extends \Twig_Extension
         $timetype = isset($timeFormat) ? $this->getFormat($timeFormat) : null;
 
         $calendarConst = $calendar === 'traditional' ? \IntlDateFormatter::TRADITIONAL : \IntlDateFormatter::GREGORIAN;
-        
+
         $pattern = $this->getDateTimePattern(
             isset($datetype) ? $datetype : $dateFormat,
             isset($timetype) ? $timetype : $timeFormat,
             $calendarConst
         );
-        
+
         return new \IntlDateFormatter(\Locale::getDefault(), $datetype, $timetype, null, $calendarConst, $pattern);
     }
-    
+
     /**
      * Format the date/time value as a string based on the current locale
-     * 
+     *
      * @param string|false $format  'short', 'medium', 'long', 'full', 'none' or false
      * @return int|null
      */
@@ -94,7 +97,7 @@ class DateExtension extends \Twig_Extension
         if ($format === false) {
             $format = 'none';
         }
-        
+
         $types = [
             'none' => \IntlDateFormatter::NONE,
             'short' => \IntlDateFormatter::SHORT,
@@ -102,13 +105,13 @@ class DateExtension extends \Twig_Extension
             'long' => \IntlDateFormatter::LONG,
             'full' => \IntlDateFormatter::FULL
         ];
-        
+
         return isset($types[$format]) ? $types[$format] : null;
     }
-    
+
     /**
      * Get the date/time pattern.
-     * 
+     *
      * @param int|string $datetype
      * @param int|string $timetype
      * @param int        $calendar
@@ -119,17 +122,17 @@ class DateExtension extends \Twig_Extension
         if (is_int($datetype) && is_int($timetype)) {
             return null;
         }
-        
+
         return $this->getDatePattern(
             isset($datetype) ? $datetype : \IntlDateFormatter::SHORT,
             isset($timetype) ? $timetype : \IntlDateFormatter::SHORT,
             $calendar
         );
     }
-    
+
     /**
      * Get the formatter to create a date and/or time pattern
-     * 
+     *
      * @param int|string $datetype
      * @param int|string $timetype
      * @param int        $calendar
@@ -145,11 +148,11 @@ class DateExtension extends \Twig_Extension
             $calendar
         );
     }
-    
+
     /**
      * Get the date and/or time pattern
      * Default date pattern is short date pattern with 4 digit year.
-     * 
+     *
      * @param int|string $datetype
      * @param int|string $timetype
      * @param int        $calendar
@@ -160,9 +163,9 @@ class DateExtension extends \Twig_Extension
         $createPattern =
             (is_int($datetype) && $datetype !== \IntlDateFormatter::NONE) ||
             (is_int($timetype) && $timetype !== \IntlDateFormatter::NONE);
-        
+
         $pattern = $createPattern ? $this->getDatePatternFormatter($datetype, $timetype, $calendar)->getPattern() : '';
-        
+
         return trim(
             (is_string($datetype) ? $datetype . ' ' : '') .
             preg_replace('/\byy?\b/', 'yyyy', $pattern) .
@@ -172,7 +175,7 @@ class DateExtension extends \Twig_Extension
 
     /**
      * Format the date and/or time value as a string based on the current locale
-     * 
+     *
      * @param \DateTime|int|string $value
      * @param string               $dateFormat  null, 'short', 'medium', 'long', 'full' or pattern
      * @param string               $timeFormat  null, 'short', 'medium', 'long', 'full' or pattern
@@ -184,16 +187,16 @@ class DateExtension extends \Twig_Extension
         if (!isset($value)) {
             return null;
         }
-        
+
         $date = $this->valueToDateTime($value);
         $formatter = $this->getDateFormatter($dateFormat, $timeFormat, $calendar);
-        
+
         return $formatter->format($date->getTimestamp());
     }
 
     /**
      * Format the date value as a string based on the current locale
-     * 
+     *
      * @param DateTime|int|string $date
      * @param string              $format    null, 'short', 'medium', 'long', 'full' or pattern
      * @param string              $calendar  'gregorian' or 'traditional'
@@ -203,10 +206,10 @@ class DateExtension extends \Twig_Extension
     {
         return $this->formatLocal($date, $format, false, $calendar);
     }
-    
+
     /**
      * Format the time value as a string based on the current locale
-     * 
+     *
      * @param DateTime|int|string $date
      * @param string              $format    'short', 'medium', 'long', 'full' or pattern
      * @param string              $calendar  'gregorian' or 'traditional'
@@ -219,7 +222,7 @@ class DateExtension extends \Twig_Extension
 
     /**
      * Format the date/time value as a string based on the current locale
-     * 
+     *
      * @param DateTime|int|string $date
      * @param string              $format    date format, pattern or ['date'=>format, 'time'=>format)
      * @param string              $calendar  'gregorian' or 'traditional'
@@ -234,14 +237,14 @@ class DateExtension extends \Twig_Extension
             $formatDate = $format;
             $formatTime = false;
         }
-        
+
         return $this->formatLocal($date, $formatDate, $formatTime, $calendar);
     }
-    
+
 
     /**
      * Split duration into seconds, minutes, hours, days, weeks and years.
-     * 
+     *
      * @param int $seconds
      * @return array
      */
@@ -250,42 +253,42 @@ class DateExtension extends \Twig_Extension
         if ($max < 1 || $seconds < 60) {
             return [$seconds];
         }
-        
+
         $minutes = floor($seconds / 60);
         $seconds = $seconds % 60;
         if ($max < 2 || $minutes < 60) {
             return [$seconds, $minutes];
         }
-        
+
         $hours = floor($minutes / 60);
         $minutes = $minutes % 60;
         if ($max < 3 || $hours < 24) {
             return [$seconds, $minutes, $hours];
         }
-        
+
         $days = floor($hours / 24);
         $hours = $hours % 24;
         if ($max < 4 || $days < 7) {
-            return [$seconds, $minutes, $hours, $days]; 
+            return [$seconds, $minutes, $hours, $days];
         }
-        
+
         $weeks = floor($days / 7);
         $days = $days % 7;
         if ($max < 5 || $weeks < 52) {
             return [$seconds, $minutes, $hours, $days, $weeks];
         }
-        
+
         $years = floor($weeks / 52);
         $weeks = $weeks % 52;
         return [$seconds, $minutes, $hours, $days, $weeks, $years];
     }
-    
+
     /**
      * Calculate duration from seconds.
      * One year is seen as exactly 52 weeks.
-     * 
+     *
      * Use null to skip a unit.
-     * 
+     *
      * @param int    $value     Time in seconds
      * @param array  $units     Time units (seconds, minutes, hours, days, weeks, years)
      * @param string $separator
@@ -296,41 +299,41 @@ class DateExtension extends \Twig_Extension
         if (!isset($value)) {
             return null;
         }
-        
+
         list($seconds, $minutes, $hours, $days, $weeks, $years) =
             $this->splitDuration($value, count($units) - 1) + array_fill(0, 6, null);
-        
+
         $duration = '';
         if (isset($years) && isset($units[5])) {
             $duration .= $separator . $years . $units[5];
         }
-        
+
         if (isset($weeks) && isset($units[4])) {
             $duration .= $separator . $weeks . $units[4];
         }
-        
+
         if (isset($days) && isset($units[3])) {
             $duration .= $separator . $days . $units[3];
         }
-        
+
         if (isset($hours) && isset($units[2])) {
             $duration .= $separator . $hours . $units[2];
         }
-        
+
         if (isset($minutes) && isset($units[1])) {
             $duration .= $separator . $minutes . $units[1];
         }
-        
+
         if (isset($seconds) && isset($units[0])) {
             $duration .= $separator . $seconds . $units[0];
         }
-        
+
         return trim($duration, $separator);
     }
 
     /**
      * Get the age (in years) based on a date.
-     * 
+     *
      * @param DateTime|string $value
      * @return int
      */
@@ -339,9 +342,9 @@ class DateExtension extends \Twig_Extension
         if (!isset($value)) {
             return null;
         }
-        
+
         $date = $this->valueToDateTime($value);
-        
+
         return $date->diff(new \DateTime())->format('%y');
     }
 }
