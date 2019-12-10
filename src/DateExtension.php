@@ -2,6 +2,7 @@
 
 namespace Jasny\Twig;
 
+use Twig\Error\RuntimeError;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
