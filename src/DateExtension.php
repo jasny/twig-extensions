@@ -202,9 +202,9 @@ class DateExtension extends AbstractExtension
     /**
      * Format the date value as a string based on the current locale
      *
-     * @param DateTime|int|string $date
-     * @param string              $format    null, 'short', 'medium', 'long', 'full' or pattern
-     * @param string              $calendar  'gregorian' or 'traditional'
+     * @param \DateTime|int|string $date
+     * @param string               $format    null, 'short', 'medium', 'long', 'full' or pattern
+     * @param string               $calendar  'gregorian' or 'traditional'
      * @return string
      */
     public function localDate($date, $format = null, $calendar = 'gregorian')
@@ -215,9 +215,9 @@ class DateExtension extends AbstractExtension
     /**
      * Format the time value as a string based on the current locale
      *
-     * @param DateTime|int|string $date
-     * @param string              $format    'short', 'medium', 'long', 'full' or pattern
-     * @param string              $calendar  'gregorian' or 'traditional'
+     * @param \DateTime|int|string $date
+     * @param string               $format    'short', 'medium', 'long', 'full' or pattern
+     * @param string               $calendar  'gregorian' or 'traditional'
      * @return string
      */
     public function localTime($date, $format = 'short', $calendar = 'gregorian')
@@ -228,9 +228,9 @@ class DateExtension extends AbstractExtension
     /**
      * Format the date/time value as a string based on the current locale
      *
-     * @param DateTime|int|string $date
-     * @param string              $format    date format, pattern or ['date'=>format, 'time'=>format)
-     * @param string              $calendar  'gregorian' or 'traditional'
+     * @param \DateTime|int|string $date
+     * @param string               $format    date format, pattern or ['date'=>format, 'time'=>format)
+     * @param string               $calendar  'gregorian' or 'traditional'
      * @return string
      */
     public function localDateTime($date, $format = null, $calendar = 'gregorian')
@@ -321,7 +321,7 @@ class DateExtension extends AbstractExtension
     /**
      * Get the age (in years) based on a date.
      *
-     * @param DateTime|string $value
+     * @param \DateTime|string $value
      * @return int
      */
     public function age($value)
