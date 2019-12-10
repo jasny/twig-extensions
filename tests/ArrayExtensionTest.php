@@ -4,11 +4,12 @@ namespace Jasny\Twig;
 
 use Jasny\Twig\ArrayExtension;
 use Jasny\Twig\TestHelper;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers Jasny\Twig\ArrayExtension
  */
-class ArrayExtensionTest extends \PHPUnit_Framework_TestCase
+class ArrayExtensionTest extends TestCase
 {
     use TestHelper;
     
