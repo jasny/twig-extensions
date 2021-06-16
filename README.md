@@ -4,7 +4,6 @@ Jasny Twig Extensions
 [![Build Status](https://travis-ci.org/jasny/twig-extensions.svg?branch=master)](https://travis-ci.org/jasny/twig-extensions)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jasny/twig-extensions/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/jasny/twig-extensions/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/jasny/twig-extensions/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/jasny/twig-extensions/?branch=master)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/20fdb2a4-7565-441b-8920-48a7c09113a1/mini.png)](https://insight.sensiolabs.com/projects/20fdb2a4-7565-441b-8920-48a7c09113a1)
 [![Packagist Stable Version](https://img.shields.io/packagist/v/jasny/twig-extensions.svg)](https://packagist.org/packages/jasny/twig-extensions)
 [![Packagist License](https://img.shields.io/packagist/l/jasny/twig-extensions.svg)](https://packagist.org/packages/jasny/twig-extensions)
 
