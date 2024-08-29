@@ -59,11 +59,15 @@ class PcreExtension extends AbstractExtension
      */
     protected function assertNoEval($pattern)
     {
-        $pos = strrpos($pattern, $pattern[0]);
-        $modifiers = substr($pattern, $pos + 1);
+        $patterns = (array)$pattern;
 
-        if (strpos($modifiers, 'e') !== false) {
-            throw new RuntimeError("Using the eval modifier for regular expressions is not allowed");
+        foreach ($patterns as $pattern) {
+            $pos       = strrpos($pattern, $pattern[0]);
+            $modifiers = substr($pattern, $pos + 1);
+
+            if (strpos($modifiers, 'e') !== false) {
+                throw new RuntimeError("Using the eval modifier for regular expressions is not allowed");
+            }
         }
     }
 

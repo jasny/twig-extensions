@@ -116,6 +116,14 @@ class PcreExtensionTest extends TestCase
         );
     }
 
+    public function testReplaceWithArrayOfPatterns()
+    {
+        $this->assertRender(
+            '0000AAAA',
+            "{{ '1234ABCD'|preg_replace(['/\\\\d/','/[A-Z]/'],['0', 'A']) }}"
+        );
+    }
+
     public function testReplaceAssertNoEval()
     {
         $this->expectException(TwigRuntimeError::class);
