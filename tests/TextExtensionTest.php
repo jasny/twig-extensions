@@ -1,9 +1,9 @@
 <?php
 
-namespace Jasny\Twig;
+namespace Jasny\Twig\Tests;
 
 use Jasny\Twig\TextExtension;
-use Jasny\Twig\TestHelper;
+use Jasny\Twig\Tests\Support\TestHelper;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -159,24 +159,23 @@ class TextExtensionTest extends TestCase
     }
     
     
-    public function filterProvider()
+    public static function filterProvider()
     {
         return [
-            ['paragraph'],
-            ['line'],
-            ['less'],
-            ['truncate'],
-            ['linkify']
+            'paragraph' => ['paragraph', '/'],
+            'line' => ['line', 1],
+            'less' => ['less'],
+            'truncate' => ['truncate', 10],
+            'linkify' => ['linkify']
         ];
     }
     
     /**
      * @dataProvider filterProvider
-     * 
-     * @param string $filter
      */
-    public function testWithNull($filter)
+    public function testWithNull(string $filter, $arg = null)
     {
-        $this->assertRender('-', '{{ null|' . $filter . '("//")|default("-") }}');
-    }    
+        $call = $filter . ($arg ? '(' . json_encode($arg) . ')' : '');
+        $this->assertRender('-', '{{ null|' . $call  . '|default("-") }}');
+    }
 }

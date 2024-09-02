@@ -1,9 +1,9 @@
 <?php
 
-namespace Jasny\Twig;
+namespace Jasny\Twig\Tests;
 
 use Jasny\Twig\PcreExtension;
-use Jasny\Twig\TestHelper;
+use Jasny\Twig\Tests\Support\TestHelper;
 use PHPUnit\Framework\TestCase;
 use Twig\Error\RuntimeError as TwigRuntimeError;
 

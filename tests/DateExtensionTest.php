@@ -1,9 +1,9 @@
 <?php
 
-namespace Jasny\Twig;
+namespace Jasny\Twig\Tests;
 
 use Jasny\Twig\DateExtension;
-use Jasny\Twig\TestHelper;
+use Jasny\Twig\Tests\Support\TestHelper;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -19,13 +19,13 @@ class DateExtensionTest extends TestCase
         \Locale::setDefault("en_EN");
     }
 
-    protected function getExtension()
+    protected function getExtension(): DateExtension
     {
         return new DateExtension();
     }
 
 
-    public function localDateTimeProvider()
+    public function localDateTimeProvider(): array
     {
         return [
             ['9/20/2015', '20-09-2015', "{{ '20-09-2015'|localdate }}"],
@@ -51,12 +51,9 @@ class DateExtensionTest extends TestCase
      * @param string $nl
      * @param string $template
      */
-    public function testLocalDateTimeEn($en, $nl, $template)
+    public function testLocalDateTimeEn($en, $nl, $template): void
     {
-        if (!\Locale::setDefault("en_EN")) {
-            return $this->markAsSkipped("Unable to set locale to 'en_EN'");
-        }
-
+        \Locale::setDefault("en_EN");
         $this->assertRender($en, $template);
     }
 
@@ -67,18 +64,14 @@ class DateExtensionTest extends TestCase
      * @param string $nl
      * @param string $template
      */
-    public function testLocalDateTimeNL($en, $nl, $template)
+    public function testLocalDateTimeNL($en, $nl, $template): void
     {
-        if (!\Locale::setDefault("nl_NL")) {
-            return $this->markAsSkipped("Unable to set locale to 'nl_NL'");
-        }
-
+        \Locale::setDefault("nl_NL");
         $this->assertRender($nl, $template);
-
     }
 
 
-    public function durationProvider()
+    public function durationProvider(): array
     {
         return [
             ['31s', "{{ 31|duration }}"],
@@ -111,7 +104,7 @@ class DateExtensionTest extends TestCase
     }
 
 
-    public function ageProvider()
+    public function ageProvider(): array
     {
         $time = time() - (((32 * 365) + 100) * 24 * 3600);
         $date = date('Y-m-d', $time);
@@ -134,7 +127,7 @@ class DateExtensionTest extends TestCase
     }
 
 
-    public function filterProvider()
+    public static function filterProvider(): array
     {
         return [
             ['localdate'],
@@ -147,11 +140,10 @@ class DateExtensionTest extends TestCase
 
     /**
      * @dataProvider filterProvider
-     *
-     * @param string $filter
      */
-    public function testWithNull($filter)
+    public function testWithNull(string $filter, $arg = null)
     {
-        $this->assertRender('-', '{{ null|' . $filter . '("//")|default("-") }}');
+        $call = $filter . ($arg ? '(' . json_encode($arg) . ')' : '');
+        $this->assertRender('-', '{{ null|' . $call  . '|default("-") }}');
     }
 }
