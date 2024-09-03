@@ -16,7 +16,7 @@ class DateExtensionTest extends TestCase
     public function setUp(): void
     {
         date_default_timezone_set('UTC');
-        \Locale::setDefault("en_EN");
+        \Locale::setDefault("en_US");
     }
 
     protected function getExtension(): DateExtension
@@ -30,7 +30,7 @@ class DateExtensionTest extends TestCase
         return [
             ['9/20/2015', '20-09-2015', "{{ '20-09-2015'|localdate }}"],
             ['September 20, 2015', '20 september 2015', "{{ '20-09-2015'|localdate('long') }}"],
-            ['9/20/15', "20-09-15", "{{ '20-09-2015'|localdate('short') }}"],
+            ['9/20/15', "20-09-2015", "{{ '20-09-2015'|localdate('short') }}"],
             ['Sunday, September 20, 2015', "zondag 20 september 2015", "{{ '20-09-2015'|localdate('full') }}"],
             ['20|09|2015', "20|09|2015", "{{ '20-09-2015'|localdate('dd|MM|yyyy') }}"],
 
@@ -53,7 +53,7 @@ class DateExtensionTest extends TestCase
      */
     public function testLocalDateTimeEn($en, $nl, $template): void
     {
-        \Locale::setDefault("en_EN");
+        \Locale::setDefault("en_US");
         $this->assertRender($en, $template);
     }
 

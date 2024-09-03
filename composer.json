@@ -17,7 +17,7 @@
     },
     "require": {
         "php": ">=7.4.0",
-        "twig/twig": "^2.0 | ^3.0"
+        "twig/twig": "^2.7 | ^3.0"
     },
     "suggest": {
         "ext-intl": "Required for the use of the LocalDate Twig extension",
@@ -29,7 +29,6 @@
         }
     },
     "require-dev": {
-        "php": ">=7.4.0",
         "ext-intl": "*",
         "ext-pcre": "*",
         "ext-json": "*",
