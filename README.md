@@ -1,7 +1,7 @@
 Jasny Twig Extensions
 =======================
 
-[![Build Status](https://travis-ci.org/jasny/twig-extensions.svg?branch=master)](https://travis-ci.org/jasny/twig-extensions)
+[![PHP](https://github.com/jasny/twig-extensions/actions/workflows/php.yml/badge.svg)](https://github.com/jasny/twig-extensions/actions/workflows/php.yml)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/jasny/twig-extensions/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/jasny/twig-extensions/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/jasny/twig-extensions/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/jasny/twig-extensions/?branch=master)
 [![Packagist Stable Version](https://img.shields.io/packagist/v/jasny/twig-extensions.svg)](https://packagist.org/packages/jasny/twig-extensions)
@@ -25,7 +25,7 @@ $twig->addExtension(new Jasny\Twig\TextExtension());
 $twig->addExtension(new Jasny\Twig\ArrayExtension());
 ```
 
-To use in a symfony project [register the extensions as a service](http://symfony.com/doc/current/cookbook/templating/twig_extension.html#register-an-extension-as-a-service).
+To use in a Symfony project [register the extensions as a service](http://symfony.com/doc/current/cookbook/templating/twig_extension.html#register-an-extension-as-a-service).
 
 ```yaml
 services:
@@ -53,7 +53,7 @@ services:
 
 ## Date extension
 
-Format a date base on the current locale. Requires the [intl extension](http://www.php.net/intl).
+Format a date based on the current locale. Requires the [intl extension](http://www.php.net/intl).
 
 * localdate     - Format the date value as a string based on the current locale
 * localtime     - Format the time value as a string based on the current locale
@@ -80,7 +80,7 @@ Exposes [PCRE](http://www.php.net/pcre) to Twig.
 
 * preg_quote   - Quote regular expression characters
 * preg_match   - Perform a regular expression match
-* preg_get     - Perform a regular expression match and returns the matched group
+* preg_get     - Perform a regular expression match and return the matched group
 * preg_get_all - Perform a regular expression match and return the group for all matches
 * preg_grep    - Perform a regular expression match and return an array of entries that match the pattern
 * preg_replace - Perform a regular expression search and replace
@@ -105,9 +105,9 @@ Convert text to HTML + string functions
 
 * paragraph - Add HTML paragraph and line breaks to text
 * line - Get a single line of text
-* less - Cut of text on a pagebreak
-* truncate - Cut of text if it's to long
-* linkify - Turn all URLs in clickable links (also supports Twitter @user and #subject)
+* less - Cut of text on a page break
+* truncate - Cut off text if it's too long
+* linkify - Turn all URLs into clickable links (also supports Twitter @user and #subject)
 
 
 ## Array ##
