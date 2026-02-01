@@ -22,7 +22,7 @@ class ArrayExtension extends AbstractExtension
      * Callback for Twig
      * @ignore
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('sum', [$this, 'sum']),
